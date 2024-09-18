@@ -1,0 +1,20 @@
+.stickyagenttip{
+box-shadow: 5px 5px 8px #818181; /*shadow for CSS3 capable browsers.*/
+-webkit-box-shadow: 5px 5px 8px #818181;
+-moz-box-shadow: 5px 5px 8px #818181;
+display:none;
+position:absolute;
+display:none;
+border:1px solid #DDD; /*Border around agenttip*/
+background:white;
+z-index:3000;
+}
+
+
+.stickyagenttip .stickystatus{ /*Style for footer bar within agenttip*/
+background:black;
+color:white;
+padding-top:5px;
+text-align:center;
+font:bold 11px Arial;
+}

@@ -1,0 +1,6 @@
+parameters:
+    melanomamine.chemspider.class: Melanomamine\FrontendBundle\Controller\ChemspiderController
+services:
+    melanomamine.searchChemSpider:
+        class: "%melanomamine.chemspider.class%"
+        arguments: ["@service_container"]

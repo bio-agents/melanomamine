@@ -1,0 +1,36 @@
+{% set entityType = "keywords" %}
+{% set whatToSearch = "freeText" %}
+{% set entityName = "Endolysosomal" %}
+{% extends '::frontend.html.twig' %}
+{% block title %}Welcome to Melanomamine{% endblock %}
+{% block article %}
+    {% include 'MelanomamineFrontendBundle:Search:tags_home_code.html.twig'%}
+    <section class="row display" role="main">
+        <article class="twelve columns">
+            <h6>MelanomaMine (text mining for melanoma)</h6>
+            <p>
+                MelanomaMine is a text mining application and database dedicated to the processing of melanoma related biomedical literature and knowledge resources. With the increasing number of publications everyday manual curation of texts to recognize specific gene/drug mentions becomes increasingly difficult. MelanomaMine uses information extraction and machine learning approaches to score and classify textual data and applies Named Entity Recognition methods to detect bio-entities of relevance to understand the molecular basis of melanoma, focusing therefore on genes, proteins, mutations and chemicals/drugs. Each of these entities is scored based on melanoma relevance detected by supervised machine learning text classifiers.
+            <p>
+                Underlying MelanomaMine , Support Vector Machines (SVMs) techniques are used to assign a score to the texts.
+            </p>
+            <p>
+                MelanomaMine provides an interface that enable heterogeneous search types, from a genera free text search to search types with particular entity co-occurrence constrains to entity specific search options. With a very friendly user interface, it makes it easy for users to extract information.
+            </p>
+            <p>
+                MelanomaMine  is indented  as we domain specific search and retrieval system which should be useful for both basic researchers as well as for medical personnel who want to know how relevant a particular gene or drug  or mutation is to melanoma.
+            </p>
+        </article>
+    </section>
+    <section class="row display">
+        <h6 class="twelve columns">Melanomamine pipeline</h6>
+    </section>
+    <section class="row">
+        <article class="twelve columns">
+            <img src="{{ asset('images/melanomamine_flow.png') }}" border="0" />
+            <p>
+            <small>General flowchart summarizing the MelanomaMine Text Mining data extraction process.</small>
+            </p>
+        </article>
+    </section>
+    {% include 'MelanomamineFrontendBundle:Search:scripts_code.html.twig' %}
+{% endblock %}

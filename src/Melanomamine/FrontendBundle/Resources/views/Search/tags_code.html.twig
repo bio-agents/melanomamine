@@ -1,0 +1,700 @@
+<dl class="tabs">
+    {% if entityType=="keywords" %}
+        <dd class="active"><a href="#keywords" name="keywords" class="tab">Search Keyword</a></dd>
+    {% else %}
+        <dd><a href="#keywords" name="keywords" class="tab">Search Keyword</a></dd>
+    {% endif %}
+    {% if entityType=="genes" %}
+        <dd class="active"><a href="#genes" name="genes" class="tab">Genes</a></dd>
+    {% else %}
+            <dd><a href="#genes" name="genes" class="tab">Genes</a></dd>
+    {% endif %}
+    {% if entityType=="mutations" %}
+        <dd class="active"><a href="#mutations" name="mutations" class="tab">Mutations</a></dd>
+    {% else %}
+        <dd><a href="#mutations" name="mutations" class="tab">Mutations</a></dd>
+    {% endif %}
+    {% if entityType=="chemicals" %}
+        <dd class="active"><a href="#chemicals" name="chemicals" class="tab">Chemicals</a></dd>
+    {% else %}
+        <dd><a href="#chemicals" name="chemicals" class="tab">Chemicals</a></dd>
+    {% endif %}
+    {% if entityType=="diseases" %}
+        <dd class="active"><a href="#diseases" name="diseases" class="tab">Diseases</a></dd>
+    {% else %}
+        <dd><a href="#diseases" name="diseases" class="tab">Diseases</a></dd>
+    {% endif %}
+    {% if entityType=="mutatedProteins" %}
+        <dd class="active"><a href="#mutatedProteins" name="mutatedProteins" class="tab">Mutated Proteins</a></dd>
+    {% else %}
+        <dd><a href="#mutatedProteins" name="mutatedProteins" class="tab">Mutated Proteins</a></dd>
+    {% endif %}
+    {% if entityType=="otherCancer" %}
+        <dd class="active"><a href="#otherCancer" name="otherCancer" class="tab">Other Cancer</a></dd>
+    {% else %}
+        <dd><a href="#otherCancer" name="otherCancer" class="tab">Other Cancer</a></dd>
+    {% endif %}
+    {% if entityType=="knowledge" %}
+        <dd class="active"><a href="#knowledge" name="knowledge" class="tab">Knowledge</a></dd>
+    {% else %}
+        <dd><a href="#knowledge" name="knowledge" class="tab">Knowledge Discovery</a></dd>
+    {% endif %}
+
+
+</dl>
+
+<ul class="tabs-content">
+    {% if entityType == "keywords" %}
+        <li class="active" id="keywordsTab">
+    {% else %}
+        <li id="keywordsTab">
+    {% endif %}
+        <div class="ui-widget">
+            <div class="vis-break cntrtxt">
+                {% if entityType == "keywords" %}
+                    <input id="tags-keywords" class="ui-autocomplete-input text tags" onclick="this.value=''" placeholder="e.g. {{ default_keywordSearch }}" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="{{ entityName }}">
+                {% else %}
+                    <input id="tags-keywords" class="ui-autocomplete-input text tags" onclick="this.value=''" placeholder="e.g. {{ default_keywordSearch }}" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="{{ default_keywordSearch }}">
+                {% endif %}
+                <a class="button orange bigSearch" >Search</a>
+            </div>
+
+        </div>
+        <div class="advanceSearch">
+            <div class="large-4 columns">
+                <form class="custom">
+                    <fieldset>
+                        <legend>What are you searching?</legend>
+
+                            {% if whatToSearch == "freeText" or entityType != "keywords" %}
+                                <span class="has-tip" title="Free-text search"><label for="radioWhatToSearch"><input name="keywordWhatToSearch" type="radio" id="radioKeywordWhatToSearch" style="display:none;" value="freeText" CHECKED><span class="custom radio"></span> Free-text Search</label></span>
+                            {% else %}
+                                <span class="has-tip" title="Free-text search"><label for="radioWhatToSearch"><input name="keywordWhatToSearch" type="radio" id="radioKeywordWhatToSearch" style="display:none;" value="freeText"><span class="custom radio"></span> Free-text Search</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "withGenesProtein" %}
+                                <span  class="has-tip" title="Search in documents with Genes/Proteins"><label for="radioWhatToSearch"><input name="keywordWhatToSearch" type="radio" id="radioKeywordWhatToSearch" style="display:none;" value="withGenesProtein" CHECKED><span class="custom radio"></span> With Genes/Protein</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search in documents with Genes/Proteins"><label for="radioWhatToSearch"><input name="keywordWhatToSearch" type="radio" id="radioKeywordWhatToSearch" style="display:none;" value="withGenesProtein"><span class="custom radio"></span> With Genes/Protein</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "withProteinMutations" %}
+                                <span  class="has-tip" title="Search in text with protein mutations"><label for="radioWhatToSearch"><input name="keywordWhatToSearch" type="radio" id="radioKeywordWhatToSearch" style="display:none;" value="withProteinMutations" CHECKED><span class="custom radio"></span> With Protein Mutations</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search in text with protein mutations"><label for="radioWhatToSearch"><input name="keywordWhatToSearch" type="radio" id="radioKeywordWhatToSearch" style="display:none;" value="withProteinMutations"><span class="custom radio"></span> With Protein Mutations</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "withSNPs" %}
+                                <span  class="has-tip" title="Search in documents with SNPs"><label for="radioWhatToSearch"><input name="keywordWhatToSearch" type="radio" id="radioKeywordWhatToSearch" style="display:none;" value="withSNPs" CHECKED><span class="custom radio"></span> With SNPs</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search in documents with SNPs"><label for="radioWhatToSearch"><input name="keywordWhatToSearch" type="radio" id="radioKeywordWhatToSearch" style="display:none;" value="withSNPs"><span class="custom radio"></span> With SNPs</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "withDNAmutations" %}
+                                <span  class="has-tip" title="Search in documents with DNA mutations"><label for="radioWhatToSearch"><input name="keywordWhatToSearch" type="radio" id="radioKeywordWhatToSearch" style="display:none;" value="withDNAmutations" CHECKED><span class="custom radio"></span> With DNA Mutations</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search in documents with DNA mutations"><label for="radioWhatToSearch"><input name="keywordWhatToSearch" type="radio" id="radioKeywordWhatToSearch" style="display:none;" value="withDNAmutations" ><span class="custom radio"></span> With DNA Mutations</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "withChemicals" %}
+                                <span  class="has-tip" title="Search in documents with Chemicals"><label for="radioWhatToSearch"><input name="keywordWhatToSearch" type="radio" id="radioKeywordWhatToSearch" style="display:none;" value="withChemicals" CHECKED><span class="custom radio"></span> With Chemicals</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search in documents with Chemicals"><label for="radioWhatToSearch"><input name="keywordWhatToSearch" type="radio" id="radioKeywordWhatToSearch" style="display:none;" value="withChemicals"><span class="custom radio"></span> With Chemicals</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "withDrugs" %}
+                                <span  class="has-tip" title="Search in documents with Drugs"><label for="radioWhatToSearch"><input name="keywordWhatToSearch" type="radio" id="radioKeywordWhatToSearch" style="display:none;" value="withDrugs" CHECKED><span class="custom radio"></span> With Drugs</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search in documents with Drugs"><label for="radioWhatToSearch"><input name="keywordWhatToSearch" type="radio" id="radioKeywordWhatToSearch" style="display:none;" value="withDrugs"><span class="custom radio"></span> With Drugs</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "withDiseases" %}
+                                <span  class="has-tip" title="Search in documents with Diseases"><label for="radioWhatToSearch"><input name="keywordWhatToSearch" type="radio" id="radioKeywordWhatToSearch" style="display:none;" value="withDiseases" CHECKED><span class="custom radio"></span> With Diseases</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search in documents with Diseases"><label for="radioWhatToSearch"><input name="keywordWhatToSearch" type="radio" id="radioKeywordWhatToSearch" style="display:none;" value="withDiseases" ><span class="custom radio"></span> With Diseases</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "withMutatedProteins" %}
+                                <span  class="has-tip" title="Search in documents with Mutated Proteins"><label for="radioWhatToSearch"><input name="keywordWhatToSearch" type="radio" id="radioKeywordWhatToSearch" style="display:none;" value="withMutated Proteins" CHECKED><span class="custom radio"></span> With Mutated Proteins</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search in documents with Mutated Proteins"><label for="radioWhatToSearch"><input name="keywordWhatToSearch" type="radio" id="radioKeywordWhatToSearch" style="display:none;" value="withMutatedProteins" ><span class="custom radio"></span> With Mutated Proteins</label></span>
+                            {% endif %}
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </li>
+
+    {% if entityType == "genes" %}
+        <li class="active" id="genesTab">
+    {% else %}
+        <li  id="genesTab">
+    {% endif %}
+        <div class="ui-widget">
+            <div class="vis-break cntrtxt">
+                {% if entityType == "genes" %}
+                    <input id="tags-genes" class="ui-autocomplete-input text tags" onclick="this.value=''" placeholder="e.g. {{ default_geneSearch }}" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="{{ entityName }}">
+                {% else %}
+                    <input id="tags-genes" class="ui-autocomplete-input text tags" onclick="this.value=''" placeholder="e.g. {{ default_geneSearch }}" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="{{ default_geneSearch }}">
+                {% endif %}
+                <a class="button orange bigSearch" >Search</a>
+            </div>
+
+        </div>
+        <div class="advanceSearch">
+            <form class="custom">
+                <div class="large-3 columns">
+                    <fieldset>
+                        <legend>What are you searching?</legend>
+                            {% if ((whatToSearch == "geneProteinName") or (entityType != "genes") or ((whatToSearch=="name") and (entityType=="genes")) ) %}
+                                <span class="has-tip" title="Search for Genes/Proteins names"><label for="radioWhatToSearch"><input name="geneWhatToSearch" type="radio" id="radioGeneWhatToSearch" style="display:none;" value="geneProteinName" CHECKED><span class="custom radio"></span> Genes/Proteins names</label></span>
+                            {% else %}
+                                <span class="has-tip" title="Search for Genes/Proteins names"><label for="radioWhatToSearch"><input name="geneWhatToSearch" type="radio" id="radioGeneWhatToSearch" style="display:none;" value="geneProteinName"><span class="custom radio"></span> Genes/Proteins names</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "ncbiGeneId" %}
+                                <span  class="has-tip" title="Search for NCBI genID"><label for="radioWhatToSearch"><input name="geneWhatToSearch" type="radio" id="radioGeneWhatToSearch" style="display:none;" value="ncbiGeneId" CHECKED><span class="custom radio"></span> NCBI geneID</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search for NCBI genID"><label for="radioWhatToSearch"><input name="geneWhatToSearch" type="radio" id="radioGeneWhatToSearch" style="display:none;" value="ncbiGeneId"><span class="custom radio"></span> NCBI geneID</label></span>
+                            {% endif %}
+                    </fieldset>
+                </div>
+                <div class="large-3 end columns">
+                    <fieldset>
+                        <legend>Human</legend>
+                            {% if specie is defined %}
+                                {% if specie=="9606" or specie=="human" %}
+                                    <span class="has-tip" title="Species"><label for="radioSpecies"><input name="geneHuman" type="radio" id="radioGeneSpecies" style="display:none;" value="human" CHECKED><span class="custom radio"></span> Human</label>
+                                    </span>
+                                {% else %}
+                                    <span class="has-tip" title="Species"><label for="radioSpecies"><input name="geneHuman" type="radio" id="radioGeneSpecies" style="display:none;" value="human"><span class="custom radio"></span> Human</label>
+                                    </span>
+                                {% endif %}
+
+                                {% if specie == "all" %}
+                                    <span class="has-tip" title="Species"><label for="radioSpecies"><input name="geneHuman" type="radio" id="radioGeneSpecies" style="display:none;" value="all" CHECKED><span class="custom radio"></span> All</label>
+                                    </span>
+                                {% else %}
+                                    <span class="has-tip" title="Species"><label for="radioSpecies"><input name="geneHuman" type="radio" id="radioGeneSpecies" style="display:none;" value="all"><span class="custom radio"></span> All</label>
+                                    </span>
+                                {% endif %}
+
+                                {% if specie == "queryExpansion" %}
+                                    <span class="has-tip" title="Species"><label for="radioSpecies"><input name="geneHuman" type="radio" id="radioGeneSpecies" style="display:none;" value="queryExpansion" CHECKED><span class="custom radio"></span> Query Expansion</label>
+                                    </span>
+                                {% else %}
+                                    <span class="has-tip" title="Species"><label for="radioSpecies"><input name="geneHuman" type="radio" id="radioGeneSpecies" style="display:none;" value="queryExpansion"><span class="custom radio"></span> Query Expansion</label>
+                                    </span>
+                                {% endif %}
+
+                            {% else %}
+                                <span class="has-tip" title="Species"><label for="radioSpecies"><input name="geneHuman" type="radio" id="radioGeneSpecies" style="display:none;" value="human" CHECKED><span class="custom radio"></span> Human</label>
+                                </span>
+                                <span class="has-tip" title="Species"><label for="radioSpecies"><input name="geneHuman" type="radio" id="radioGeneSpecies" style="display:none;" value="all"><span class="custom radio"></span> All</label>
+                                </span>
+                                <span class="has-tip" title="Species"><label for="radioSpecies"><input name="geneHuman" type="radio" id="radioGeneSpecies" style="display:none;" value="queryExpansion"><span class="custom radio"></span> Query Expansion</label>
+                                </span>
+                            {% endif %}
+                    </fieldset>
+                </div>
+            </form>
+        </div>
+    </li>
+
+    {% if entityType == "mutations" %}
+        <li class="active" id="mutationsTab">
+    {% else %}
+        <li id="mutationsTab">
+    {% endif %}
+        <div class="ui-widget">
+            <div class="vis-break cntrtxt">
+                {% if entityType == "mutations" %}
+                    <input id="tags-mutations" class="ui-autocomplete-input text tags" onclick="this.value=''" placeholder="e.g. {{ default_mutationSearch }}" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="{{ entityName }}">
+                {% else %}
+                    <input id="tags-mutations" class="ui-autocomplete-input text tags" onclick="this.value=''" placeholder="e.g. {{ default_mutationSearch }}" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="{{ default_mutationSearch }}">
+                {% endif %}
+                <a class="button orange bigSearch" >Search</a>
+            </div>
+
+        </div>
+        <div class="advanceSearch">
+            <form class="custom">
+                <div class="large-3 columns">
+                    <fieldset>
+                        <legend>DNA/Protein mutations</legend>
+                            {% if dna is defined %}
+                                {% if dna == "true" %}
+                                    <input type="checkbox" id="mutationDNACheckbox" name="mutationDNA" value="dna" checked> DNA<br>
+                                {% else %}
+                                    <input type="checkbox" id="mutationDNACheckbox" name="mutationDNA" value="dna"> DNA<br>
+                                {% endif %}
+                            {% else %}
+                                <input type="checkbox" id="mutationDNACheckbox" name="mutationDNA" value="dna"> DNA<br>
+                            {% endif %}
+                            {% if protein is defined %}
+                                {% if protein == "true" %}
+                                    <input type="checkbox" id="mutationProteinCheckbox" name="mutationProtein" value="protein" checked> Protein<br>
+                                {% else %}
+                                    <input type="checkbox" id="mutationProteinCheckbox" name="mutationProtein" value="protein"> Protein<br>
+                                {% endif %}
+                            {% else %}
+                                    <input type="checkbox" id="mutationProteinCheckbox" name="mutationProtein" value="protein" checked> Protein<br>
+                            {% endif %}
+                    </fieldset>
+                </div>
+                <div class="large-3 columns end">
+                    <fieldset>
+                        <legend>What are you searching?</legend>
+                            {% if whatToSearch == "substitutions" or entityType != "mutations" %}
+                                <span class="has-tip" title="Search for substitutions"><label for="radioWhatToSearch"><input name="mutationWhatToSearch" type="radio" id="radioMutationWhatToSearch" style="display:none;" value="substitutions" CHECKED><span class="custom radio"></span> Substitutions</label></span>
+                            {% else %}
+                                <span class="has-tip" title="Search for substitutions"><label for="radioWhatToSearch"><input name="mutationWhatToSearch" type="radio" id="radioMutationWhatToSearch" style="display:none;" value="substitutions" ><span class="custom radio"></span> Substitutions</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "insertions" %}
+                                <span  class="has-tip" title="Search for insertions"><label for="radioWhatToSearch"><input name="mutationWhatToSearch" type="radio" id="radioMutationWhatToSearch" style="display:none;" value="insertions" CHECKED><span class="custom radio"></span> Insertions</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search for insertions"><label for="radioWhatToSearch"><input name="mutationWhatToSearch" type="radio" id="radioMutationWhatToSearch" style="display:none;" value="insertions"><span class="custom radio"></span> Insertions</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "deletions" %}
+                                <span  class="has-tip" title="Search for deletions"><label for="radioWhatToSearch"><input name="mutationWhatToSearch" type="radio" id="radioMutationWhatToSearch" style="display:none;" value="deletions" CHECKED><span class="custom radio"></span> Deletions</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search for deletions"><label for="radioWhatToSearch"><input name="mutationWhatToSearch" type="radio" id="radioMutationWhatToSearch" style="display:none;" value="deletions"><span class="custom radio"></span> Deletions</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "indels" %}
+                                <span  class="has-tip" title="Search for INDELs"><label for="radioWhatToSearch"><input name="mutationWhatToSearch" type="radio" id="radioMutationWhatToSearch" style="display:none;" value="indels" CHECKED><span class="custom radio"></span> INDELs</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search for INDELs"><label for="radioWhatToSearch"><input name="mutationWhatToSearch" type="radio" id="radioMutationWhatToSearch" style="display:none;" value="indels"><span class="custom radio"></span> INDELs</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "frameshifts" %}
+                                <span  class="has-tip" title="Search for frameshifts"><label for="radioWhatToSearch"><input name="mutationWhatToSearch" type="radio" id="radioMutationWhatToSearch" style="display:none;" value="frameshifts" CHECKED><span class="custom radio"></span> Frameshifts</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search for frameshifts"><label for="radioWhatToSearch"><input name="mutationWhatToSearch" type="radio" id="radioMutationWhatToSearch" style="display:none;" value="frameshifts" ><span class="custom radio"></span> Frameshifts</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "snps" %}
+                                <span  class="has-tip" title="Search for SNPs"><label for="radioWhatToSearch"><input name="mutationWhatToSearch" type="radio" id="radioMutationWhatToSearch" style="display:none;" value="snps" CHECKED><span class="custom radio"></span> SNPs</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search for SNPs"><label for="radioWhatToSearch"><input name="mutationWhatToSearch" type="radio" id="radioMutationWhatToSearch" style="display:none;" value="snps"><span class="custom radio"></span> SNPs</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "all" %}
+                                <span  class="has-tip" title="Search for All type of mutations"><label for="radioWhatToSearch"><input disabled name="mutationWhatToSearch" type="radio" id="radioMutationWhatToSearch" style="display:none;" value="all" CHECKED><span class="custom radio"></span> All</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search for All type of mutations"><label for="radioWhatToSearch"><input disabled name="mutationWhatToSearch" type="radio" id="radioMutationWhatToSearch" style="display:none;" value="all"><span class="custom radio"></span> All</label></span>
+                            {% endif %}
+                    </fieldset>
+                </div>
+                <div class="large-3 columns end">
+                    <fieldset>
+                        <legend>Search Normalized Protein Mutations</legend>
+                            <table class="normalizedProteinMutations">
+                                <tr>
+                                    <td>Wild-Type:</td>
+                                    {% if normalizedWildType is defined and normalizedWildType !="NONE" %}
+                                        <td><span class="has-tip" title="Insert Wild-Type mutant. e.g: D"><input id="normalizedWildType" class="mutations" maxlength="1" value="{{ normalizedWildType }}"></span></td>
+                                    {% else %}
+                                        <td><span class="has-tip" title="Insert Wild-Type mutant. e.g: D"><input id="normalizedWildType" class="mutations" maxlength="1"></span></td>
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <td>Position:</td>
+                                    {% if normalizedPosition is defined and normalizedPosition !="NONE" %}
+                                        <td><span class="has-tip" title="Insert Position of the mutation e.g: 593"><input id="normalizedPosition" class="mutations" value="{{ normalizedPosition }}"></span></td>
+                                    {% else %}
+                                        <td><span class="has-tip" title="Insert Position of the mutation e.g: 593"><input id="normalizedPosition" class="mutations"></span></td>
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <td>Mutant:</td>
+                                    {% if normalizedMutant is defined and normalizedMutant !="NONE" %}
+                                        <td><span class="has-tip" title="Insert Mutant. e.g: K"><input id="normalizedMutant" class="mutations" maxlength="1" value="{{normalizedMutant}}"></span></td>
+                                    {% else %}
+                                        <td><span class="has-tip" title="Insert Mutant. e.g: K"><input id="normalizedMutant" class="mutations" maxlength="1"></span></td>
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="right"><span class="has-tip" title="Search Normalized Protein Mutations"><a class="button searchNormalized">Search</a></span></td>
+                                </tr>
+                            </table>
+                    </fieldset>
+                </div>
+            </form>
+        </div>
+    </li>
+
+    {% if entityType == "chemicals" %}
+        <li class="active" id="chemicalsTab">
+    {% else %}
+        <li id="chemicalsTab">
+    {% endif %}
+        <div class="ui-widget">
+            <div class="vis-break cntrtxt">
+                {% if entityType == "chemicals" %}
+                    <input id="tags-chemicals" class="ui-autocomplete-input text tags" onclick="this.value=''" placeholder="e.g. {{ default_chemicalSearch }}" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="{{ entityName }}">
+                {% else %}
+                    <input id="tags-chemicals" class="ui-autocomplete-input text tags" onclick="this.value=''" placeholder="e.g. {{ default_chemicalSearch }}" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="{{ default_chemicalSearch }}">
+                {% endif %}
+                <a class="button orange bigSearch" >Search</a>
+            </div>
+
+        </div>
+        <div class="advanceSearch">
+            <form class="custom">
+                <div class="large-4 columns">
+                    <fieldset>
+                        <legend>What are you searching?</legend>
+                        {% if whatToSearch == "name" or entityType != "chemicals" %}
+                            <span class="has-tip" title="Chemical/compound name"><label for="radioWhatToSearch"><input name="chemicalWhatToSearch" type="radio" id="radioChemicalWhatToSearch" style="display:none;" value="name" CHECKED><span class="custom radio"></span> Name</label></span>
+                        {% else %}
+                            <span class="has-tip" title="Chemical/compound name"><label for="radioWhatToSearch"><input name="chemicalWhatToSearch" type="radio" id="radioChemicalWhatToSearch" style="display:none;" value="name"><span class="custom radio"></span> Name</label></span>
+                        {% endif %}
+
+                        {% if whatToSearch == "id" %}
+                            <span  class="has-tip" title="Chemical compound database identifier (Drugbank, ChEBI, PubChem Compound, PubChem Substance, CAS RN, Human Metabolome Database, KEGG Compound, KEGG Drug, MeSH Substance)"><label for="radioWhatToSearch"><input name="chemicalWhatToSearch" type="radio" id="radioChemicalWhatToSearch" style="display:none;" value="id" CHECKED disabled><span class="custom radio"></span> Chemical Identifiers</label></span>
+                        {% else %}
+                            <span  class="has-tip" title="Chemical compound database identifier (Drugbank, ChEBI, PubChem Compound, PubChem Substance, CAS RN, Human Metabolome Database, KEGG Compound, KEGG Drug, MeSH Substance)"><label for="radioWhatToSearch"><input name="chemicalWhatToSearch" type="radio" id="radioChemicalWhatToSearch" style="display:none;" value="id" disabled><span class="custom radio"></span> Chemical Identifiers</label></span>
+                        {% endif %}
+
+                        {% if whatToSearch == "smiles" %}
+                            <span  class="has-tip" title="SMILES Formula(Simplified Molecular-Input Line-Entry System). Only exact match search is currently enabled. See: http://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system"><label for="radioWhatToSearch"><input name="chemicalWhatToSearch" type="radio" id="radioChemicalWhatToSearch" style="display:none;" value="smiles" CHECKED DISABLED><span class="custom radio"></span> SMILES</label></span>
+                        {% else %}
+                            <span  class="has-tip" title="SMILES Formula(Simplified Molecular-Input Line-Entry System). Only exact match search is currently enabled. See: http://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system"><label for="radioWhatToSearch"><input name="chemicalWhatToSearch" type="radio" id="radioChemicalWhatToSearch" style="display:none;" value="smiles" DISABLED><span class="custom radio"></span> SMILES</label></span>
+                        {% endif %}
+
+                        {% if whatToSearch == "inchis" %}
+                            <span  class="has-tip" title="S IUPAC International Chemical Identifier (InChi). Only exact match search is currently enabled. See: http://www.iupac.org/home/publications/e-resources/inchi.html"><label for="radioWhatToSearch"><input name="chemicalWhatToSearch" type="radio" id="radioChemicalWhatToSearch" style="display:none;" value="inchis" CHECKED DISABLED><span class="custom radio"></span> InChi</label></span>
+                        {% else %}
+                            <span  class="has-tip" title="S IUPAC International Chemical Identifier (InChi). Only exact match search is currently enabled. See: http://www.iupac.org/home/publications/e-resources/inchi.html"><label for="radioWhatToSearch"><input name="chemicalWhatToSearch" type="radio" id="radioChemicalWhatToSearch" style="display:none;" value="inchis" DISABLED><span class="custom radio"></span> InChi</label></span>
+                        {% endif %}
+
+                        {% if whatToSearch == "any" %}
+                            <span  class="has-tip" title="Free text search within chemicals mentioning sentences"><label for="radioWhatToSearch"><input name="chemicalWhatToSearch" type="radio" id="radioChemicalWhatToSearch" style="display:none;" value="any" CHECKED DISABLED><span class="custom radio"></span> Any (Free search)</label></span>
+                        {% else %}
+                            <span  class="has-tip" title="Free text search within chemicals mentioning sentences"><label for="radioWhatToSearch"><input name="chemicalWhatToSearch" type="radio" id="radioChemicalWhatToSearch" style="display:none;" value="any" DISABLED><span class="custom radio"></span> Any (Free search)</label></span>
+                        {% endif %}
+                    </fieldset>
+                </div>
+                <div class="large-3 end columns">
+                    <fieldset>
+                        <legend>Query Expansion</legend>
+                        {% if queryExpansion is defined %}
+                            {% if queryExpansion=="true" %}
+                                <input id="checkboxChemicals" type="checkbox" checked><label for="checkboxChemicals" class="checkbox-query-expansion">&nbsp;&nbsp;Apply</label>
+                            {% else%}
+                                <input id="checkboxChemicals" type="checkbox" ><label for="checkboxChemicals" class="checkbox-query-expansion">&nbsp;&nbsp;Apply</label>
+                            {% endif %}
+                        {% else %}
+                            <input id="checkboxChemicals" type="checkbox" ><label for="checkboxChemicals" class="checkbox-query-expansion">&nbsp;&nbsp;Apply</label>
+                        {% endif %}
+                    </fieldset>
+                </div>
+            </form>
+        </div>
+    </li>
+    {% if entityType == "diseases" %}
+        <li class="active" id="diseasesTab">
+    {% else %}
+        <li id="diseasesTab">
+    {% endif %}
+        <div class="ui-widget">
+            <div class="vis-break cntrtxt">
+                {% if entityType == "diseases" %}
+                    <input id="tags-diseases" class="ui-autocomplete-input text tags" onclick="this.value=''" placeholder="e.g. {{ default_diseaseSearch }}" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="{{ entityName }}">
+                {% else %}
+                    <input id="tags-diseases" class="ui-autocomplete-input text tags" onclick="this.value=''" placeholder="e.g. {{ default_diseaseSearch }}" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="{{ default_diseaseSearch }}">
+                {% endif %}
+                <a class="button orange bigSearch" >Search</a>
+            </div>
+
+        </div>
+        <div class="advanceSearch">
+            <div class="large-4 columns">
+                <form class="custom">
+                    <fieldset>
+                        <legend>What are you searching?</legend>
+                            {% if whatToSearch == "name" or entityType != "diseases" %}
+                                <span class="has-tip" title="Search for disease name"><label for="radioWhatToSearch"><input name="diseaseWhatToSearch" type="radio" id="radioDiseaseWhatToSearch" style="display:none;" value="name" CHECKED><span class="custom radio"></span> Disease name</label></span>
+                            {% else %}
+                                <span class="has-tip" title="Search for disease name"><label for="radioWhatToSearch"><input name="diseaseWhatToSearch" type="radio" id="radioDiseaseWhatToSearch" style="display:none;" value="name"><span class="custom radio"></span> Disease name</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "meshId" %}
+                                <span  class="has-tip" title="Search for MeSH id"><label for="radioWhatToSearch"><input name="diseaseWhatToSearch" type="radio" id="radioDiseaseWhatToSearch" style="display:none;" value="meshId" CHECKED><span class="custom radio"></span> MeSH id</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search for MeSH id"><label for="radioWhatToSearch"><input name="diseaseWhatToSearch" type="radio" id="radioDiseaseWhatToSearch" style="display:none;" value="meshId"><span class="custom radio"></span> MeSH id</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "ommimId" %}
+                                <span  class="has-tip" title="Search for OMMIM id"><label for="radioWhatToSearch"><input name="diseaseWhatToSearch" type="radio" id="radioDiseaseWhatToSearch" style="display:none;" value="ommimId" CHECKED><span class="custom radio"></span> OMMIM id</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search for OMMIM id"><label for="radioWhatToSearch"><input name="diseaseWhatToSearch" type="radio" id="radioDiseaseWhatToSearch" style="display:none;" value="ommimId"><span class="custom radio"></span> OMMIM id</label></span>
+                            {% endif %}
+
+
+
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </li>
+
+    {% if entityType == "mutatedProteins" %}
+        <li class="active" id="mutatedProteinsTab">
+    {% else %}
+        <li id="mutatedProteinsTab">
+    {% endif %}
+        <div class="ui-widget">
+            <div class="vis-break cntrtxt">
+                {% if entityType == "mutatedProteins" %}
+                    <input id="tags-mutatedProteins" class="ui-autocomplete-input text tags" onclick="this.value=''" placeholder="e.g. {{ default_mutatedProteinSearch }}" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="{{ entityName }}">
+                {% else %}
+                    <input id="tags-mutatedProteins" class="ui-autocomplete-input text tags" onclick="this.value=''" placeholder="e.g. {{ default_mutatedProteinSearch }}" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="{{ default_mutatedProteinSearch }}">
+                {% endif %}
+                <a class="button orange bigSearch" >Search</a>
+            </div>
+
+        </div>
+        <div class="advanceSearch">
+            <form class="custom">
+                <div class="large-3 columns">
+                    <fieldset>
+                        <legend>Human</legend>
+                        {% if specie is defined %}
+                            {% if specie == "human" or specie=="9606" %}
+                                <span class="has-tip" title="Species"><label for="radioSpecies"><input name="mutatedProteinsHuman" type="radio" id="radioMutatedProteinsSpecies" style="display:none;" value="human" CHECKED><span class="custom radio"></span> Human</label>
+                                </span>
+                                <span class="has-tip" title="Species"><label for="radioSpecies"><input name="mutatedProteinsHuman" type="radio" id="radioMutatedProteinsSpecies" style="display:none;" value="all"><span class="custom radio"></span> All</label>
+                                </span>
+                                <span class="has-tip" title="Species"><label for="radioSpecies"><input name="mutatedProteinsHuman" type="radio" id="radioMutatedProteinsSpecies" style="display:none;" value="queryExpansion"><span class="custom radio"></span> Query Expansion</label>
+                                </span>
+                            {% elseif specie == "all" %}
+                                <span class="has-tip" title="Species"><label for="radioSpecies"><input name="mutatedProteinsHuman" type="radio" id="radioMutatedProteinsSpecies" style="display:none;" value="human"><span class="custom radio"></span> Human</label>
+                                </span>
+                                <span class="has-tip" title="Species"><label for="radioSpecies"><input name="mutatedProteinsHuman" type="radio" id="radioMutatedProteinsSpecies" style="display:none;" value="all" CHECKED><span class="custom radio"></span> All</label>
+                                </span>
+                                <span class="has-tip" title="Species"><label for="radioSpecies"><input name="mutatedProteinsHuman" type="radio" id="radioMutatedProteinsSpecies" style="display:none;" value="queryExpansion"><span class="custom radio"></span> Query Expansion</label>
+                                </span>
+                            {% elseif specie == "queryExpansion" %}
+                                <span class="has-tip" title="Species"><label for="radioSpecies"><input name="mutatedProteinsHuman" type="radio" id="radioMutatedProteinsSpecies" style="display:none;" value="human"><span class="custom radio"></span> Human</label>
+                                </span>
+                                <span class="has-tip" title="Species"><label for="radioSpecies"><input name="mutatedProteinsHuman" type="radio" id="radioMutatedProteinsSpecies" style="display:none;" value="all"><span class="custom radio"></span> All</label>
+                                </span>
+                                <span class="has-tip" title="Species"><label for="radioSpecies"><input name="mutatedProteinsHuman" type="radio" id="radioMutatedProteinsSpecies" style="display:none;" value="queryExpansion" CHECKED><span class="custom radio"></span> Query Expansion</label>
+                                </span>
+                            {% else %}
+                                <span class="has-tip" title="Species"><label for="radioSpecies"><input name="mutatedProteinsHuman" type="radio" id="radioMutatedProteinsSpecies" style="display:none;" value="human"><span class="custom radio"></span> Human</label>
+                                </span>
+                                <span class="has-tip" title="Species"><label for="radioSpecies"><input name="mutatedProteinsHuman" type="radio" id="radioMutatedProteinsSpecies" style="display:none;" value="all"><span class="custom radio"></span> All</label>
+                                </span>
+                                <span class="has-tip" title="Species"><label for="radioSpecies"><input name="mutatedProteinsHuman" type="radio" id="radioMutatedProteinsSpecies" style="display:none;" value="queryExpansion"><span class="custom radio"></span> Query Expansion</label>
+                                </span>
+                            {% endif %}
+
+                        {% else %}
+                            <span class="has-tip" title="Species"><label for="radioSpecies"><input name="mutatedProteinsHuman" type="radio" id="radioMutatedProteinsSpecies" style="display:none;" value="human" CHECKED><span class="custom radio"></span> Human</label>
+                            </span>
+                            <span class="has-tip" title="Species"><label for="radioSpecies"><input name="mutatedProteinsHuman" type="radio" id="radioMutatedProteinsSpecies" style="display:none;" value="all"><span class="custom radio"></span> All</label>
+                            </span>
+                            <span class="has-tip" title="Species"><label for="radioSpecies"><input name="mutatedProteinsHuman" type="radio" id="radioMutatedProteinsSpecies" style="display:none;" value="queryExpansion"><span class="custom radio"></span> Query Expansion</label>
+                            </span>
+                        {% endif %}
+                    </fieldset>
+                </div>
+                <div class="large-3 columns">
+                    <fieldset>
+                        <legend>What are you searching?</legend>
+                            {% if whatToSearch == "proteinName" or entityType != "mutatedProteins" %}
+                                <span class="has-tip" title="Search for Protein Names"><label for="radioWhatToSearch"><input name="mutatedProteinWhatToSearch" type="radio" id="radioMutatedProteinWhatToSearch" style="display:none;" value="proteinName" CHECKED><span class="custom radio"></span> Protein name</label></span>
+                            {% else %}
+                                <span class="has-tip" title="Search for Protein Names"><label for="radioWhatToSearch"><input name="mutatedProteinWhatToSearch" type="radio" id="radioMutatedProteinWhatToSearch" style="display:none;" value="proteinName"><span class="custom radio"></span> Protein name</label></span>
+                            {% endif %}
+                            {% if whatToSearch == "mutationName" %}
+                                <span class="has-tip" title="Search for Mutation Names"><label for="radioWhatToSearch"><input name="mutatedProteinWhatToSearch" type="radio" id="radioMutatedProteinWhatToSearch" style="display:none;" value="mutationName" CHECKED><span class="custom radio"></span> Mutation name</label></span>
+                            {% else %}
+                                <span class="has-tip" title="Search for Mutation Names"><label for="radioWhatToSearch"><input name="mutatedProteinWhatToSearch" type="radio" id="radioMutatedProteinWhatToSearch" style="display:none;" value="mutationName"><span class="custom radio"></span> Mutation name</label></span>
+                            {% endif %}
+                            {% if whatToSearch == "uniprotAccession" %}
+                                <span  class="has-tip" title="Search for Uniprot Accession"><label for="radioWhatToSearch"><input name="mutatedProteinWhatToSearch" type="radio" id="radioMutatedProteinWhatToSearch" style="display:none;" value="uniprotAccession" CHECKED><span class="custom radio"></span> Uniprot Accession</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search for Uniprot Accession"><label for="radioWhatToSearch"><input name="mutatedProteinWhatToSearch" type="radio" id="radioMutatedProteinWhatToSearch" style="display:none;" value="uniprotAccession"><span class="custom radio"></span> Uniprot Accession</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "geneId" %}
+                                <span  class="has-tip" title="Search for NCBI GeneId"><label for="radioWhatToSearch"><input name="mutatedProteinWhatToSearch" type="radio" id="radioMutatedProteinWhatToSearch" style="display:none;" value="geneId" CHECKED><span class="custom radio"></span> NCBI GeneId</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search for NCBI GeneId"><label for="radioWhatToSearch"><input name="mutatedProteinWhatToSearch" type="radio" id="radioMutatedProteinWhatToSearch" style="display:none;" value="geneId"><span class="custom radio"></span> NCBI GeneId</label></span>
+                            {% endif %}
+
+
+
+                    </fieldset>
+                </div>
+                <div class="large-3 columns end">
+                    <fieldset>
+                        <legend>Search Normalized Mutated Proteins</legend>
+                        <table class="normalizedProteinMutations">
+                            <tr>
+                                <td>Wild-Type:</td>
+                                {% if normalizedWildType is defined and normalizedWildType !="NONE" %}
+                                    <td><span class="has-tip" title="Insert Wild-Type mutant. e.g: D"><input id="normalizedMutatedProteinsWildType" class="mutations" maxlength="1" value="{{ normalizedWildType }}"></span></td>
+                                {% else %}
+                                    <td><span class="has-tip" title="Insert Wild-Type mutant. e.g: D"><input id="normalizedMutatedProteinsWildType" class="mutations" maxlength="1"></span></td>
+                                {% endif %}
+                            </tr>
+                            <tr>
+                                <td>Position:</td>
+                                {% if normalizedPosition is defined and normalizedPosition !="NONE" %}
+                                    <td><span class="has-tip" title="Insert Position of the mutation e.g: 593"><input id="normalizedMutatedProteinsPosition" class="mutations" value="{{ normalizedPosition }}"></span></td>
+                                {% else %}
+                                    <td><span class="has-tip" title="Insert Position of the mutation e.g: 593"><input id="normalizedMutatedProteinsPosition" class="mutations"></span></td>
+                                {% endif %}
+                            </tr>
+                            <tr>
+                                <td>Mutant:</td>
+                                {% if normalizedMutant is defined and normalizedMutant !="NONE" %}
+                                    <td><span class="has-tip" title="Insert Mutant. e.g: K"><input id="normalizedMutatedProteinsMutant" class="mutations" maxlength="1" value="{{normalizedMutant}}"></span></td>
+                                {% else %}
+                                    <td><span class="has-tip" title="Insert Mutant. e.g: K"><input id="normalizedMutatedProteinsMutant" class="mutations" maxlength="1"></span></td>
+                                {% endif %}
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td class="right"><span class="has-tip" title="Search Normalized Protein Mutations"><a class="button searchNormalizedMutatedProteins">Search</a></span></td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                </div>
+            </form>
+        </div>
+    </li>
+
+    {% if entityType == "otherCancer" %}
+        <li class="active" id="otherCancerTab">
+    {% else %}
+        <li id="otherCancerTab">
+    {% endif %}
+        <div class="ui-widget">
+            <div class="vis-break cntrtxt">
+                {% if entityType == "otherCancer" %}
+                    <input id="tags-otherCancer" class="ui-autocomplete-input text tags" onclick="this.value=''" placeholder="e.g. {{ default_otherCancerSearch }}" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="{{ entityName }}">
+                {% else %}
+                    <input id="tags-otherCancer" class="ui-autocomplete-input text tags" onclick="this.value=''" placeholder="e.g. {{ default_otherCancerSearch }}" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="{{ default_otherCancerSearch }}">
+                {% endif %}
+                <a class="button orange bigSearch" >Search</a>
+            </div>
+
+        </div>
+        <div class="advanceSearch">
+            <div class="large-4 columns">
+                <form class="custom">
+                    <fieldset>
+                        <legend>What are you searching?</legend>
+
+                            {% if whatToSearch == "freeText" or entityType != "keywords" %}
+                                <span class="has-tip" title="Free-text search"><label for="radioWhatToSearch"><input name="otherCancerWhatToSearch" type="radio" id="radioOtherCancerWhatToSearch" style="display:none;" value="freeText" CHECKED><span class="custom radio"></span> Free-text Search</label></span>
+                            {% else %}
+                                <span class="has-tip" title="Free-text search"><label for="radioWhatToSearch"><input name="otherCancerWhatToSearch" type="radio" id="radioOtherCancerWhatToSearch" style="display:none;" value="freeText"><span class="custom radio"></span> Free-text Search</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "withGenesProtein" %}
+                                <span  class="has-tip" title="Search in documents with Genes/Proteins"><label for="radioWhatToSearch"><input name="otherCancerWhatToSearch" type="radio" id="radioOtherCancerWhatToSearch" style="display:none;" value="withGenesProtein" CHECKED><span class="custom radio"></span> With Genes/Protein</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search in documents with Genes/Proteins"><label for="radioWhatToSearch"><input name="otherCancerWhatToSearch" type="radio" id="radioOtherCancerWhatToSearch" style="display:none;" value="withGenesProtein"><span class="custom radio"></span> With Genes/Protein</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "withProteinMutations" %}
+                                <span  class="has-tip" title="Search in text with protein mutations"><label for="radioWhatToSearch"><input name="otherCancerWhatToSearch" type="radio" id="radioOtherCancerWhatToSearch" style="display:none;" value="withProteinMutations" CHECKED><span class="custom radio"></span> With Protein Mutations</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search in text with protein mutations"><label for="radioWhatToSearch"><input name="otherCancerWhatToSearch" type="radio" id="radioOtherCancerWhatToSearch" style="display:none;" value="withProteinMutations"><span class="custom radio"></span> With Protein Mutations</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "withSNPs" %}
+                                <span  class="has-tip" title="Search in documents with SNPs"><label for="radioWhatToSearch"><input name="otherCancerWhatToSearch" type="radio" id="radioOtherCancerWhatToSearch" style="display:none;" value="withSNPs" CHECKED><span class="custom radio"></span> With SNPs</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search in documents with SNPs"><label for="radioWhatToSearch"><input name="otherCancerWhatToSearch" type="radio" id="radioOtherCancerWhatToSearch" style="display:none;" value="withSNPs"><span class="custom radio"></span> With SNPs</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "withDNAmutations" %}
+                                <span  class="has-tip" title="Search in documents with DNA mutations"><label for="radioWhatToSearch"><input name="otherCancerWhatToSearch" type="radio" id="radioOtherCancerWhatToSearch" style="display:none;" value="withDNAmutations" CHECKED><span class="custom radio"></span> With DNA Mutations</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search in documents with DNA mutations"><label for="radioWhatToSearch"><input name="otherCancerWhatToSearch" type="radio" id="radioOtherCancerWhatToSearch" style="display:none;" value="withDNAmutations" ><span class="custom radio"></span> With DNA Mutations</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "withChemicals" %}
+                                <span  class="has-tip" title="Search in documents with Chemicals"><label for="radioWhatToSearch"><input name="otherCancerWhatToSearch" type="radio" id="radioOtherCancerWhatToSearch" style="display:none;" value="withChemicals" CHECKED><span class="custom radio"></span> With Chemicals</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search in documents with Chemicals"><label for="radioWhatToSearch"><input name="otherCancerWhatToSearch" type="radio" id="radioOtherCancerWhatToSearch" style="display:none;" value="withChemicals"><span class="custom radio"></span> With Chemicals</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "withDrugs" %}
+                                <span  class="has-tip" title="Search in documents with Drugs"><label for="radioWhatToSearch"><input name="otherCancerWhatToSearch" type="radio" id="radioOtherCancerWhatToSearch" style="display:none;" value="withDrugs" CHECKED><span class="custom radio"></span> With Drugs</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search in documents with Drugs"><label for="radioWhatToSearch"><input name="otherCancerWhatToSearch" type="radio" id="radioOtherCancerWhatToSearch" style="display:none;" value="withDrugs"><span class="custom radio"></span> With Drugs</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "withDiseases" %}
+                                <span  class="has-tip" title="Search in documents with Diseases"><label for="radioWhatToSearch"><input name="otherCancerWhatToSearch" type="radio" id="radioOtherCancerWhatToSearch" style="display:none;" value="withDiseases" CHECKED><span class="custom radio"></span> With Diseases</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search in documents with Diseases"><label for="radioWhatToSearch"><input name="otherCancerWhatToSearch" type="radio" id="radioOtherCancerWhatToSearch" style="display:none;" value="withDiseases" ><span class="custom radio"></span> With Diseases</label></span>
+                            {% endif %}
+
+                            {% if whatToSearch == "withMutatedProteins" %}
+                                <span  class="has-tip" title="Search in documents with Mutated Proteins"><label for="radioWhatToSearch"><input name="otherCancerWhatToSearch" type="radio" id="radioOtherCancerWhatToSearch" style="display:none;" value="withMutated Proteins" CHECKED><span class="custom radio"></span> With Mutated Proteins</label></span>
+                            {% else %}
+                                <span  class="has-tip" title="Search in documents with Mutated Proteins"><label for="radioWhatToSearch"><input name="otherCancerWhatToSearch" type="radio" id="radioOtherCancerWhatToSearch" style="display:none;" value="withMutatedProteins" ><span class="custom radio"></span> With Mutated Proteins</label></span>
+                            {% endif %}
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </li>
+
+    {% if entityType=="knowledge" %}
+        <li id="knowledgeTab" class="active">
+    {% else %}
+        <li id="knowledgeTab">
+    {% endif %}
+        <div class="ui-widget">
+            <div class="vis-break cntrtxt">
+                    <input id="tags-knowledge" class="ui-autocomplete-input text tags" onclick="this.value=''" placeholder="{{ knowledgeSearch_message }}" aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" value="" disabled>
+            </div>
+
+        </div>
+        <div class="advanceSearch">
+            <form class="custom">
+                <div class="large-3 columns">
+                    <fieldset>
+                        <legend><div id="legendKnowledge">Terms</div></legend>
+                        <table class="knowledge">
+                            <tr>
+                                <td>
+                                    <span class="has-tip knowledgeTerms left" title="Extract knowledge searching for diseases"><label for="radioWhatToSearch"><input name="knowledgeWhatToSearchTerm1" type="radio" id="radioKnowledgeWhatToSearchTerm1" style="display:none;" value="disease" {% if entityType1 is defined %} {% if entityType1=="disease" %} CHECKED {% endif %} {% endif %}><span class="custom radio"></span> Disease&nbsp;</label></span>
+                                    <span class="has-tip knowledgeTerms left" title="Extract knowledge searching for genes"><label for="radioWhatToSearch"><input name="knowledgeWhatToSearchTerm1" type="radio" id="radioKnowledgeWhatToSearchTerm1" style="display:none;" value="gene" {% if entityType1 is defined %} {% if entityType1=="gene" %} CHECKED {% endif %} {% endif %}><span class="custom radio"></span> Gene&nbsp;</label></span>
+                                    <span class="has-tip knowledgeTerms left" title="Extract knowledge from Free-text search"><label for="radioWhatToSearch"><input name="knowledgeWhatToSearchTerm1" type="radio" id="radioKnowledgeWhatToSearchTerm1" style="display:none;" value="freeText" {% if entityType1 is defined %} {% if entityType1=="freeText" %} CHECKED {% endif %} {% endif %}><span class="custom radio"></span> Free-text&nbsp;</label></span>
+                                </td>
+                                <td><span class="has-tip tipKnowledge1" title="Insert first Disease/Gene/Term"><input id="inputConcept1" onclick="this.value=''" class="ui-autocomplete-input text" value="{% if concept1 is defined %}{{ concept1 }}{% else %}{{ default_term1 }}{% endif %}" placeholder="e.g. {% if concept1 is defined %}{{ concept1 }}{% else %}{{ default_term1 }}{% endif %}"></span></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="has-tip knowledgeTerms left" title="Extract knowledge searching for diseases"><label for="radioWhatToSearch"><input name="knowledgeWhatToSearchTerm2" type="radio" id="radioKnowledgeWhatToSearchTerm2" style="display:none;" value="disease" {% if entityType2 is defined %} {% if entityType2=="disease" %} CHECKED {% endif %} {% endif %}><span class="custom radio"></span> Disease&nbsp;</label></span>
+                                    <span class="has-tip knowledgeTerms left" title="Extract knowledge searching for genes"><label for="radioWhatToSearch"><input name="knowledgeWhatToSearchTerm2" type="radio" id="radioKnowledgeWhatToSearchTerm2" style="display:none;" value="gene" {% if entityType2 is defined %} {% if entityType2=="gene" %} CHECKED {% endif %} {% endif %}><span class="custom radio"></span> Gene&nbsp;</label></span>
+                                    <span class="has-tip knowledgeTerms left" title="Extract knowledge from Free-text search"><label for="radioWhatToSearch"><input name="knowledgeWhatToSearchTerm2" type="radio" id="radioKnowledgeWhatToSearchTerm2" style="display:none;" value="freeText" {% if entityType2 is defined %} {% if entityType2=="freeText" %} CHECKED {% endif %} {% endif %}><span class="custom radio"></span> Free-text&nbsp;</label></span>
+                                </td>
+                                <td><span class="has-tip tipKnowledge2" title="Insert second Disease/Gene"><input id="inputConcept2" onclick="this.value=''" class="ui-autocomplete-input text" value="{% if concept2 is defined %}{{ concept2 }}{% else %}{{ default_term2 }}{% endif %}" placeholder="e.g. {% if concept2 is defined %}{{ concept2 }}{% else %}{{ default_term2 }}{% endif %}"></span></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><a class="button orange searchKnowledge right">Search</a></td>
+                            </tr>
+                        </table>
+                    </fieldset>
+                </div>
+            </form>
+        </div>
+    </li>
+</ul>
+<div class="clear-both"></div>

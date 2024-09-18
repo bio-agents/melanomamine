@@ -1,0 +1,98 @@
+{% extends '::frontend.html.twig' %}
+{% block title %}Listing Evidences {% endblock %}
+{% block article %}
+    {% include 'MelanomamineFrontendBundle:Search:tags_code.html.twig' %}
+    {% set agenttipCounter=1 %}
+    {% set stringStickyAgenttip = "" %}
+
+    <div id="evidences">
+        <table id="tableDisambiguation">
+        {% for key in arrayGeneSetEnrichment|keys %}
+            <tr>
+                <td>
+                    {% set geneSetEnrichment = arrayGeneSetEnrichment[key] %}
+                    {% set lineWithIdentifier = geneSetEnrichment[1] %}
+                    {% set arrayLine = lineWithIdentifier|split("\t") %}
+                    {% set identifier = arrayLine[0] %}
+
+                    {% set lengthGeneSet = geneSetEnrichment|length %}
+                    {# There are some geneSets that can be void. We check it first. If it is not void (just two lines inside it) we iterate over it#}
+                    {% if geneSetEnrichment|length != 2 %}
+                        <thead>
+                            <th>{{ identifier }}</th>
+                            <th>p-value</th>
+                            <th>Entrez Gene ID => Mentions</th>
+                        </thead>
+                        <tbody>
+                        {% for i in 2..lengthGeneSet-1 %}
+                            {% set line=geneSetEnrichment[i] %}
+                            {% set arrayTmp = line|split("\t") %}
+                            {% set identifier = arrayTmp[0] %}
+                            <tr>{# kegg","go_bp","pfam","reactome","matador","corum");// "interpro" is not working #}
+                                {% if key == "kegg" %}
+                                    <td><a href="http://www.genome.jp/dbget-bin/www_bget?pathway+{{identifier}}" target="_blank">{{ identifier }}</a></td>
+                                {% elseif key == "go_bp" %}
+                                    <td><a href="http://amigo.geneontology.org/amigo/term/{{ identifier }}" target="_blank">{{ identifier }}</a></td>
+                                {% elseif key == "pfam" %}
+                                    <td><a href="http://pfam.xfam.org/family/{{ identifier }}" target="_blank">{{ identifier }}</a></td>
+                                {% elseif key == "reactome" %}
+                                    <td><a href="http://reactome.org/content/query?q={{ identifier }}" target="_blank">{{ identifier }}</a></td>
+                                {% elseif key == "matador" %}
+                                    <td>{{ identifier }}</td>
+                                {% elseif key == "corum" %}
+                                    {% set arrayCorum= identifier|split(":") %}
+                                    <td><a href="http://mips.helmholtz-muenchen.de/genre/proj/corum/complexdetails.html?id={{ arrayCorum[1] }}" target="_blank">{{ identifier }}</a></td>
+                                {% else %}
+                                    <td>{{ identifier }}</td>
+                                {% endif %}
+                                <td>{{ arrayTmp[1] }}</td>
+                                {# We translate EnsembleGeneId to EntrezGeneIDs #}
+                                {% set arrayEnsembl= arrayTmp[2]|split("|") %}
+                                <td>
+                                    <table>
+                                {% for ensembl in arrayEnsembl %}
+                                    {% set arrayEntrez = arrayEnsembEntrez[ensembl] %}
+                                    {% for entrez in arrayEntrez %}
+                                        <tr>
+                                            <td>
+                                                <a href="http://www.ncbi.nlm.nih.gov/gene/{{ entrez }}" target="_blank"> {{ entrez }}</a>
+                                            </td>
+                                        {% set arrayMentions = arrayEntrezMention[entrez] %}
+                                            <td>=>
+                                        {% for mention in arrayMentions %}
+                                                {% if loop.last %}
+                                                    {{mention}}.
+                                                {% else %}
+                                                    {{ mention }},&nbsp;
+                                                {% endif %}
+                                        {% endfor %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endfor %}
+                                    </table>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+
+                {% set contador = 1 %}
+
+
+
+
+
+
+        <div id="mystickyagenttip" class="stickyagenttip">
+            <div style="padding:5px">
+                {# stringStickyAgenttip | raw #}
+            </div>
+            <div class="stickystatus"></div>
+        </div>
+    {% include 'MelanomamineFrontendBundle:Search:scripts_code.html.twig' %}
+{% endblock %}

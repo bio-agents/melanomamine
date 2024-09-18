@@ -1,0 +1,650 @@
+{% extends '::frontend.html.twig' %}
+{% block title %}Listing Evidences {% endblock %}
+{% block article %}
+    {% include 'MelanomamineFrontendBundle:Search:tags_code.html.twig' %}
+    <div id="evidences">
+        <div id="vennDirectAssociations">
+            <legend>DIRECT ASSOCIATIONS</legend>
+        </div>
+        <div class="clear-both"></div>
+        <div id="panelAbstracts">
+            <div id="abstracts1" class="info-panel">
+                <h3>Abstracts Related to {{ concept1 }}</h3>
+                <span class="show-hide">(Hide)</span>
+                <table id="tableResults1" class="tablesorter">
+                    <thead>
+                        {% set environment = app.environment %}
+
+                        <th>Pubmed Link</th>
+                        <th>Score</th>
+                        <th>Title</th>
+                        <th>Abstract</th>
+                    </thead>
+                    <tbody>
+                        {% set contador = 1 %}
+
+                        {%for pmid in arrayPmids1%}
+                            <tr class="document {{ cycle(['odd', 'even'], contador) }}">
+                                {% set contador = contador + 1 %}
+                                {% set title = arrayAbstracts1[pmid]["title"]  %}
+                                {% set text = arrayAbstracts1[pmid]["text"]  %}
+                                {% set score = arrayAbstracts1[pmid]["melanoma_score_2"]  %}
+                                {% set imageRoute = 'images/pubmed.png' %}
+                                {% set link="http://www.ncbi.nlm.nih.gov/pubmed/" ~ pmid %}
+
+                                <td>
+                                    <a href="{{ link }}" target="_blank"><img src="{{ asset(imageRoute) }}" class="outlinkLogo"/></a>
+                                </td>
+                                <td>
+                                    <div class="center">{{ score | number_format(2) | colorCodingScoreFilter | raw }}</div>
+                                </td>
+                                <td>
+                                    {{ title | raw }}
+                                </td>
+                                <td>
+                                    {{ text | raw }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="abstracts2" class="info-panel">
+                <h3>Abstracts Related to {{ concept2 }}</h3>
+                <span class="show-hide">(Hide)</span>
+                <table id="tableResults2" class="tablesorter">
+                    <thead>
+                        {% set environment = app.environment %}
+
+                        <th>Pubmed Link</th>
+                        <th>Score</th>
+                        <th>Title</th>
+                        <th>Abstract</th>
+                    </thead>
+                    <tbody>
+                        {% set contador = 1 %}
+
+                        {%for pmid in arrayPmids2%}
+                            <tr class="document {{ cycle(['odd', 'even'], contador) }}">
+                                {% set contador = contador + 1 %}
+                                {% set title = arrayAbstracts2[pmid]["title"]  %}
+                                {% set text = arrayAbstracts2[pmid]["text"]  %}
+                                {% set score = arrayAbstracts2[pmid]["melanoma_score_2"]  %}
+                                {% set imageRoute = 'images/pubmed.png' %}
+                                {% set link="http://www.ncbi.nlm.nih.gov/pubmed/" ~ pmid %}
+
+                                <td>
+                                    <a href="{{ link }}" target="_blank"><img src="{{ asset(imageRoute) }}" class="outlinkLogo"/></a>
+                                </td>
+                                <td>
+                                    <div class="center">{{ score | number_format(2) | colorCodingScoreFilter | raw }}</div>
+                                </td>
+                                <td>
+                                    {{ title | raw }}
+                                </td>
+                                <td>
+                                    {{ text | raw }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="abstractsIntersection" class="info-panel">
+                <h3>Abstracts Related to {{ concept1 }}-{{ concept2 }} intersection</h3>
+                <span class="show-hide">(Hide)</span>
+                <table id="tableResultsIntersection" class="tablesorter">
+                    <thead>
+                        {% set environment = app.environment %}
+
+                        <th>Pubmed Link</th>
+                        <th>Score</th>
+                        <th>Title</th>
+                        <th>Abstract</th>
+                    </thead>
+                    <tbody>
+                        {% set contador = 1 %}
+
+                        {%for pmid in arrayPmidsIntersection%}
+                            <tr class="document {{ cycle(['odd', 'even'], contador) }}">
+                                {% set contador = contador + 1 %}
+                                {% set title = arrayAbstracts1[pmid]["title"]  %}
+                                {% set text = arrayAbstracts1[pmid]["text"]  %}
+                                {% set score = arrayAbstracts1[pmid]["melanoma_score_2"]  %}
+                                {% set imageRoute = 'images/pubmed.png' %}
+                                {% set link="http://www.ncbi.nlm.nih.gov/pubmed/" ~ pmid %}
+
+                                <td>
+                                    <a href="{{ link }}" target="_blank"><img src="{{ asset(imageRoute) }}" class="outlinkLogo"/></a>
+                                </td>
+                                <td>
+                                    <div class="center">{{ score | number_format(2) | colorCodingScoreFilter | raw }}</div>
+                                </td>
+                                <td>
+                                    {{ title | raw }}
+                                </td>
+                                <td>
+                                    {{ text | raw }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div><!-- id=panelAbstracts -->
+        <div class="clear-both"></div>
+
+
+        <div id="vennIndirectAssociationsGenes">
+            <legend>INDIRECT ASSOCIATIONS (Genes)</legend>
+        </div>
+        <div id="vennIndirectAssociationsCompounds">
+            <legend>INDIRECT ASSOCIATIONS (Compounds)</legend>
+        </div>
+        <div class="clear-both"></div>
+
+        <div id="panelGenes">
+            <div id="genesSingletons1" class="info-panel">
+                <h3>Genes Related to {{ concept1 }}</h3>
+                <span class="show-hide">(Hide)</span><br/>
+                <table id="tableResults1" class="tablesorter">
+                    <thead>
+                        {% set environment = app.environment %}
+
+                        <th>NCBI geneId</th>
+                        <th>Publications</th>
+                    </thead>
+                    <tbody>
+                        {% set contador = 1 %}
+                        {% set arrayGenesSinglets1=arrayIndirectAssociations["arrayGenesSinglets1"] %}
+                        {% set arrayGenes1=arrayIndirectAssociations["arrayGenes1"] %}
+                        {%for ncbiGeneId in arrayGenesSinglets1%}
+
+
+                            <tr class="document {{ cycle(['odd', 'even'], contador) }}">
+                                <td>
+                                    {{ ncbiGeneId }}
+                                </td>
+                                <td>
+                                    {% set arrayPmids = arrayGenes1[ncbiGeneId] %}
+                                    {% for pmid in arrayPmids|keys %}
+                                        {% set numberOfAppearances=arrayPmids[pmid] %}
+                                        {% set title = arrayAbstracts1[pmid]["title"]  %}
+                                        {% set text = arrayAbstracts1[pmid]["text"]  %}
+                                        {% set score = arrayAbstracts1[pmid]["melanoma_score_2"]  %}
+                                        {% set imageRoute = 'images/pubmed.png' %}
+                                        {% set link="http://www.ncbi.nlm.nih.gov/pubmed/" ~ pmid %}
+                                        {{pmid}}####{{numberOfAppearances}}####{{ score | number_format(2) | colorCodingScoreFilter | raw }}####{{title}}####{{text}}<br/>
+                                    {%endfor%}
+                                </td>
+                                {% set contador=contador+1 %}
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="genesSingletons2" class="info-panel">
+                <h3>Genes Related to {{ concept2 }}</h3>
+                <span class="show-hide">(Hide)</span><br/>
+                <table id="tableResults2" class="tablesorter">
+                    <thead>
+                        {% set environment = app.environment %}
+
+                        <th>NCBI geneId</th>
+                        <th>Publications</th>
+                    </thead>
+                    <tbody>
+                        {% set contador = 1 %}
+                        {% set arrayGenesSinglets2=arrayIndirectAssociations["arrayGenesSinglets2"] %}
+                        {% set arrayGenes2=arrayIndirectAssociations["arrayGenes2"] %}
+                        {%for ncbiGeneId in arrayGenesSinglets2%}
+                            <tr class="document {{ cycle(['odd', 'even'], contador) }}">
+                                <td>
+                                    {{ ncbiGeneId }}
+                                </td>
+                                <td>
+                                    {% set arrayPmids = arrayGenes2[ncbiGeneId] %}
+                                    {% for pmid in arrayPmids|keys %}
+                                        {% set numberOfAppearances=arrayPmids[pmid] %}
+                                        {% set title = arrayAbstracts2[pmid]["title"]  %}
+                                        {% set text = arrayAbstracts2[pmid]["text"]  %}
+                                        {% set score = arrayAbstracts2[pmid]["melanoma_score_2"]  %}
+                                        {% set imageRoute = 'images/pubmed.png' %}
+                                        {% set link="http://www.ncbi.nlm.nih.gov/pubmed/" ~ pmid %}
+                                        {{pmid}}####{{numberOfAppearances}}####{{ score | number_format(2) | colorCodingScoreFilter | raw }}####{{title}}####{{text}}<br/>
+                                    {%endfor%}
+                                </td>
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="genesIntersection" class="info-panel">
+                <h3>Genes Related to {{ concept1 }}-{{ concept2 }} intersection (Same pmid)</h3>
+                <span class="show-hide">(Hide)</span><br/>
+                <table id="tableResults2" class="tablesorter">
+                    <thead>
+                        {% set environment = app.environment %}
+
+                        <th>NCBI geneId</th>
+                        <th>Publications</th>
+                    </thead>
+                    <tbody>
+                        {% set contador = 1 %}
+                        {% set arrayIntersectionGenesSamePmids=arrayIndirectAssociations["arrayIntersectionGenesSamePmids"] %}
+                        {%for ncbiGeneId in arrayIntersectionGenesSamePmids%}
+                            <tr class="document {{ cycle(['odd', 'even'], contador) }}">
+                                <td>
+                                    {{ ncbiGeneId }}
+                                </td>
+                                <td>
+                                    {% set arrayPmids = arrayGenes1[ncbiGeneId] %}
+                                    {% for pmid in arrayPmids|keys %}
+                                        {% set numberOfAppearances=arrayPmids[pmid] %}
+                                        {% set title = arrayAbstracts1[pmid]["title"]  %}
+                                        {% set text = arrayAbstracts1[pmid]["text"]  %}
+                                        {% set score = arrayAbstracts1[pmid]["melanoma_score_2"]  %}
+                                        {% set imageRoute = 'images/pubmed.png' %}
+                                        {% set link="http://www.ncbi.nlm.nih.gov/pubmed/" ~ pmid %}
+                                        {{pmid}}####{{numberOfAppearances}}####{{ score | number_format(2) | colorCodingScoreFilter | raw }}####{{title}}####{{text}}<br/>
+                                    {%endfor%}
+                                </td>
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+
+                <h3>Genes Related to {{ concept1 }}-{{ concept2 }} intersection. (Different pmid)</h3>
+                <span class="show-hide">(Hide)</span><br/>
+                <table id="tableResults2" class="tablesorter">
+                    <thead>
+                        {% set environment = app.environment %}
+
+                        <th>NCBI geneId</th>
+                        <th>Publications</th>
+                    </thead>
+                    <tbody>
+                        {% set contador = 1 %}
+                        {% set arrayIntersectionGenesDifferentPmids=arrayIndirectAssociations["arrayIntersectionGenesDifferentPmids"] %}
+                        {%for ncbiGeneId in arrayIntersectionGenesDifferentPmids%}
+                            <tr class="document {{ cycle(['odd', 'even'], contador) }}">
+                                <td>
+                                    {{ ncbiGeneId }}
+                                </td>
+                                <td>
+                                    {% set arrayPmids = arrayGenes1[ncbiGeneId] %}
+                                    {% for pmid in arrayPmids|keys %}
+                                        {% set numberOfAppearances=arrayPmids[pmid] %}
+                                        {% set title = arrayAbstracts1[pmid]["title"]  %}
+                                        {% set text = arrayAbstracts1[pmid]["text"]  %}
+                                        {% set score = arrayAbstracts1[pmid]["melanoma_score_2"]  %}
+                                        {% set imageRoute = 'images/pubmed.png' %}
+                                        {% set link="http://www.ncbi.nlm.nih.gov/pubmed/" ~ pmid %}
+                                        {{pmid}}####{{numberOfAppearances}}####{{ score | number_format(2) | colorCodingScoreFilter | raw }}####{{title}}####{{text}}<br/>
+                                    {%endfor%}
+                                </td>
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div> <!-- panelGenes  -->
+
+
+        <div id="panelCompounds">
+            <div id="compoundsSingletons1" class="info-panel">
+                <h3>Compounds Related to {{ concept1 }}</h3>
+                <span class="show-hide">(Hide)</span><br/>
+                <table id="tableResults1" class="tablesorter">
+                    <thead>
+                        {% set environment = app.environment %}
+
+                        <th>NCBI geneId</th>
+                        <th>Publications</th>
+                    </thead>
+                    <tbody>
+                        {% set contador = 1 %}
+                        {% set arrayCompoundsSinglets1=arrayIndirectAssociations["arrayCompoundsSinglets1"] %}
+                        {% set arrayCompounds1=arrayIndirectAssociations["arrayCompounds1"] %}
+                        {%for mention in arrayCompoundsSinglets1%}
+
+
+                            <tr class="document {{ cycle(['odd', 'even'], contador) }}">
+                                <td>
+                                    {{ mention }}
+                                </td>
+                                <td>
+                                    {% set arrayPmids = arrayCompounds1[mention] %}
+                                    {% for pmid in arrayPmids|keys %}
+                                        {% set numberOfAppearances=arrayPmids[pmid] %}
+                                        {% set title = arrayAbstracts1[pmid]["title"]  %}
+                                        {% set text = arrayAbstracts1[pmid]["text"]  %}
+                                        {% set score = arrayAbstracts1[pmid]["melanoma_score_2"]  %}
+                                        {% set imageRoute = 'images/pubmed.png' %}
+                                        {% set link="http://www.ncbi.nlm.nih.gov/pubmed/" ~ pmid %}
+                                        {{pmid}}####{{numberOfAppearances}}####{{ score | number_format(2) | colorCodingScoreFilter | raw }}####{{title}}####{{text}}<br/>
+                                    {%endfor%}
+                                </td>
+                                {% set contador=contador+1 %}
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="compoundsSingletons2" class="info-panel">
+                <h3>Compounds Related to {{ concept2 }}</h3>
+                <span class="show-hide">(Hide)</span><br/>
+                <table id="tableResults2" class="tablesorter">
+                    <thead>
+                        {% set environment = app.environment %}
+
+                        <th>Mention</th>
+                        <th>Publications</th>
+                    </thead>
+                    <tbody>
+                        {% set contador = 1 %}
+                        {% set arrayCompoundsSinglets2=arrayIndirectAssociations["arrayCompoundsSinglets2"] %}
+                        {% set arrayCompounds2=arrayIndirectAssociations["arrayCompounds2"] %}
+                        {%for mention in arrayCompoundsSinglets2%}
+                            <tr class="document {{ cycle(['odd', 'even'], contador) }}">
+                                <td>
+                                    {{ mention }}
+                                </td>
+                                <td>
+                                    {% set arrayPmids = arrayCompounds2[mention] %}
+                                    {% for pmid in arrayPmids|keys %}
+                                        {% set numberOfAppearances=arrayPmids[pmid] %}
+                                        {% set title = arrayAbstracts2[pmid]["title"]  %}
+                                        {% set text = arrayAbstracts2[pmid]["text"]  %}
+                                        {% set score = arrayAbstracts2[pmid]["melanoma_score_2"]  %}
+                                        {% set imageRoute = 'images/pubmed.png' %}
+                                        {% set link="http://www.ncbi.nlm.nih.gov/pubmed/" ~ pmid %}
+                                        {{pmid}}####{{numberOfAppearances}}####{{ score | number_format(2) | colorCodingScoreFilter | raw }}####{{title}}####{{text}}<br/>
+                                    {%endfor%}
+                                </td>
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="compoundsIntersection" class="info-panel">
+                <h3>Compounds Related to {{ concept1 }}-{{ concept2 }} intersection (Same pmid)</h3>
+                <span class="show-hide">(Hide)</span><br/>
+                <table id="tableResults2" class="tablesorter">
+                    <thead>
+                        {% set environment = app.environment %}
+
+                        <th>Mention</th>
+                        <th>Publications</th>
+                    </thead>
+                    <tbody>
+                        {% set contador = 1 %}
+                        {% set arrayIntersectionCompoundsSamePmids=arrayIndirectAssociations["arrayIntersectionCompoundsSamePmids"] %}
+                        {%for mention in arrayIntersectionCompoundsSamePmids%}
+                            <tr class="document {{ cycle(['odd', 'even'], contador) }}">
+                                <td>
+                                    {{ mention }}
+                                </td>
+                                <td>
+                                    {% set arrayPmids = arrayCompounds1[mention] %}
+                                    {% for pmid in arrayPmids|keys %}
+                                        {% set numberOfAppearances=arrayPmids[pmid] %}
+                                        {% set title = arrayAbstracts1[pmid]["title"]  %}
+                                        {% set text = arrayAbstracts1[pmid]["text"]  %}
+                                        {% set score = arrayAbstracts1[pmid]["melanoma_score_2"]  %}
+                                        {% set imageRoute = 'images/pubmed.png' %}
+                                        {% set link="http://www.ncbi.nlm.nih.gov/pubmed/" ~ pmid %}
+                                        {{pmid}}####{{numberOfAppearances}}####{{ score | number_format(2) | colorCodingScoreFilter | raw }}####{{title}}####{{text}}<br/>
+                                    {%endfor%}
+                                </td>
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+
+                <h3>Compounds Related to {{ concept1 }}-{{ concept2 }} intersection. (Different pmid)</h3>
+                <span class="show-hide">(Hide)</span><br/>
+                <table id="tableResults2" class="tablesorter">
+                    <thead>
+                        {% set environment = app.environment %}
+
+                        <th>Mention</th>
+                        <th>Publications</th>
+                    </thead>
+                    <tbody>
+                        {% set contador = 1 %}
+                        {% set arrayIntersectionCompoundsDifferentPmids=arrayIndirectAssociations["arrayIntersectionCompoundsDifferentPmids"] %}
+                        {%for mention in arrayIntersectionCompoundsDifferentPmids%}
+                            <tr class="document {{ cycle(['odd', 'even'], contador) }}">
+                                <td>
+                                    {{ mention }}
+                                </td>
+                                <td>
+                                    {% set arrayPmids = arrayCompounds1[mention] %}
+                                    {% for pmid in arrayPmids|keys %}
+                                        {% set numberOfAppearances=arrayPmids[pmid] %}
+                                        {% set title = arrayAbstracts1[pmid]["title"]  %}
+                                        {% set text = arrayAbstracts1[pmid]["text"]  %}
+                                        {% set score = arrayAbstracts1[pmid]["melanoma_score_2"]  %}
+                                        {% set imageRoute = 'images/pubmed.png' %}
+                                        {% set link="http://www.ncbi.nlm.nih.gov/pubmed/" ~ pmid %}
+                                        {{pmid}}####{{numberOfAppearances}}####{{ score | number_format(2) | colorCodingScoreFilter | raw }}####{{title}}####{{text}}<br/>
+                                    {%endfor%}
+                                </td>
+                            </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div><!-- panelCompounds -->
+
+    </div><!-- id=evidences -->
+
+    {% include 'MelanomamineFrontendBundle:Search:scripts_code.html.twig' %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script src="{{ asset('javascripts/venn.js/venn.js') }}"></script>
+
+    <script>
+        {% set size1 = arrayPmids1|length%}
+        {% set size2 = arrayPmids2|length%}
+        {% set sizeIntersection = arrayPmidsIntersection|length%}
+        var setsDirectAssociations = [
+             {"sets": [0], "label": "{{ concept1 }}", "size":{{ size1 }} ,"entityType":"abstracts1", "listConcept":""},
+             {"sets": [1], "label": "{{ concept2 }}", "size":{{ size2 }} ,"entityType":"abstracts2", "listConcept":""},
+             {"sets": [0, 1], "size": {{ sizeIntersection }},"entityType":"abstractsIntersection", "listConcept":""}
+        ];
+
+        var chart = venn.VennDiagram()
+                         .width(600)
+                         .height(467);
+
+        var div = d3.select("#vennDirectAssociations")
+        div.datum(setsDirectAssociations).call(chart);
+
+        var agenttip = d3.select("body").append("div")
+            .attr("class", "vennagenttip");
+
+        div.selectAll("path")
+            .style("stroke-opacity", 0)
+            .style("stroke", "#fff")
+            .style("stroke-width", 0)
+
+        div.selectAll("g")
+            .on("mouseover", function(d, i) {
+                // sort all the areas relative to the current item
+                venn.sortAreas(div, d);
+
+                // Display a agenttip with the current size
+                agenttip.transition().duration(400).style("opacity", .9);
+                agenttip.text(d.size + " Abstracts");
+
+                // highlight the current path
+                var selection = d3.select(this).transition("agenttip").duration(400);
+                selection.select("path")
+                    .style("stroke-width", 3)
+                    .style("fill-opacity", d.sets.length == 1 ? .4 : .1)
+                    .style("stroke-opacity", 1);
+            })
+
+            .on("mousemove", function() {
+                agenttip.style("left", (d3.event.pageX) + "px")
+                       .style("top", (d3.event.pageY - 28) + "px");
+            })
+
+            .on("mouseout", function(d, i) {
+                agenttip.transition().duration(400).style("opacity", 0);
+                var selection = d3.select(this).transition("agenttip").duration(400);
+                selection.select("path")
+                    .style("stroke-width", 0)
+                    .style("fill-opacity", d.sets.length == 1 ? .25 : .0)
+                    .style("stroke-opacity", 0);
+            })
+
+            .on("click", function(d, i) {
+                var entityType=d["entityType"]; //This one has to be shown. Rest has to be hidden;
+                $('#panelsAbstracts').show();
+                $('.info-panel').hide();
+                $('#'+entityType).show();
+                //.toggle("slide", {direction: 'up'}, 750);
+            });
+    </script>
+
+    <script>
+        {% set size1 = arrayGenesSinglets1|length%}
+        {% set size2 = arrayGenesSinglets2|length%}
+        {% set sizeIntersection = arrayIntersectionGenesSamePmids | length + arrayIntersectionGenesDifferentPmids | length %}
+        var setsIndirectAssociationsGenes = [
+             {"sets": [0], "label": "{{ concept1 }}", "size":{{ size1 }} ,"entityType":"genesSingletons1", "listConcept":""},
+             {"sets": [1], "label": "{{ concept2 }}", "size":{{ size2 }} ,"entityType":"genesSingletons2", "listConcept":""},
+             {"sets": [0, 1], "size": {{ sizeIntersection }},"entityType":"genesIntersection", "listConcept":""}
+        ];
+
+        var chart = venn.VennDiagram()
+                         .width(520)
+                         .height(385);
+
+        var div = d3.select("#vennIndirectAssociationsGenes");
+        div.datum(setsIndirectAssociationsGenes).call(chart);
+
+        var agenttip = d3.select("body").append("div")
+            .attr("class", "vennagenttip");
+
+        div.selectAll("path")
+            .style("stroke-opacity", 0)
+            .style("stroke", "#fff")
+            .style("stroke-width", 0)
+
+        div.selectAll("g")
+            .on("mouseover", function(d, i) {
+                // sort all the areas relative to the current item
+                venn.sortAreas(div, d);
+
+                // Display a agenttip with the current size
+                agenttip.transition().duration(400).style("opacity", .9);
+                agenttip.text(d.size + " Genes");
+
+                // highlight the current path
+                var selection = d3.select(this).transition("agenttip").duration(400);
+                selection.select("path")
+                    .style("stroke-width", 3)
+                    .style("fill-opacity", d.sets.length == 1 ? .4 : .1)
+                    .style("stroke-opacity", 1);
+            })
+
+            .on("mousemove", function() {
+                agenttip.style("left", (d3.event.pageX) + "px")
+                       .style("top", (d3.event.pageY - 28) + "px");
+            })
+
+            .on("mouseout", function(d, i) {
+                agenttip.transition().duration(400).style("opacity", 0);
+                var selection = d3.select(this).transition("agenttip").duration(400);
+                selection.select("path")
+                    .style("stroke-width", 0)
+                    .style("fill-opacity", d.sets.length == 1 ? .25 : .0)
+                    .style("stroke-opacity", 0);
+            })
+
+            .on("click", function(d, i) {
+                var entityType=d["entityType"]; //This one has to be shown. Rest has to be hidden;
+                $('#panelCompounds').hide();
+                $('#panelGenes').show();
+                $('.info-panel').hide();
+                $('#'+entityType).show();
+                //.toggle("slide", {direction: 'up'}, 750);
+            });
+    </script>
+
+    <script>
+        {% set size1 = arrayCompoundsSinglets1|length %}
+        {% set size2 = arrayCompoundsSinglets2|length %}
+        {% set sizeIntersection = arrayIntersectionCompoundsSamePmids | length + arrayIntersectionCompoundsDifferentPmids | length %}
+        var setsIndirectAssociationsCompounds = [
+             {"sets": [0], "label": "{{ concept1 }}", "size":{{ size1 }} ,"entityType":"compoundsSingletons1", "listConcept":""},
+             {"sets": [1], "label": "{{ concept2 }}", "size":{{ size2 }} ,"entityType":"compoundsSingletons2", "listConcept":""},
+             {"sets": [0, 1], "size": {{ sizeIntersection }},"entityType":"compoundsIntersection", "listConcept":""}
+        ];
+
+        var chart = venn.VennDiagram()
+                         .width(520)
+                         .height(385);
+
+        var div = d3.select("#vennIndirectAssociationsCompounds");
+        div.datum(setsIndirectAssociationsCompounds).call(chart);
+
+        var agenttip = d3.select("body").append("div")
+            .attr("class", "vennagenttip");
+
+        div.selectAll("path")
+            .style("stroke-opacity", 0)
+            .style("stroke", "#fff")
+            .style("stroke-width", 0)
+
+        div.selectAll("g")
+            .on("mouseover", function(d, i) {
+                // sort all the areas relative to the current item
+                venn.sortAreas(div, d);
+
+                // Display a agenttip with the current size
+                agenttip.transition().duration(400).style("opacity", .9);
+                agenttip.text(d.size + " Compounds");
+
+                // highlight the current path
+                var selection = d3.select(this).transition("agenttip").duration(400);
+                selection.select("path")
+                    .style("stroke-width", 3)
+                    .style("fill-opacity", d.sets.length == 1 ? .4 : .1)
+                    .style("stroke-opacity", 1);
+            })
+
+            .on("mousemove", function() {
+                agenttip.style("left", (d3.event.pageX) + "px")
+                       .style("top", (d3.event.pageY - 28) + "px");
+            })
+
+            .on("mouseout", function(d, i) {
+                agenttip.transition().duration(400).style("opacity", 0);
+                var selection = d3.select(this).transition("agenttip").duration(400);
+                selection.select("path")
+                    .style("stroke-width", 0)
+                    .style("fill-opacity", d.sets.length == 1 ? .25 : .0)
+                    .style("stroke-opacity", 0);
+            })
+
+            .on("click", function(d, i) {
+                var entityType=d["entityType"]; //This one has to be shown. Rest has to be hidden;
+                $('#panelGenes').hide();
+                $('#panelCompounds').show();
+                $('.info-panel').hide();
+                $('#'+entityType).show();
+                //.toggle("slide", {direction: 'up'}, 750);
+            });
+    </script>
+
+{% endblock %}

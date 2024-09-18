@@ -1,0 +1,6 @@
+{% extends "FOSUserBundle::layout.html.twig" %}
+{% block title %}Melanomamine registration page{% endblock %}
+{% block fos_user_content %}
+<a href="{{ path('fos_user_registration_register') }}">{{ 'layout.register'|trans({}, 'FOSUserBundle') }}</a>
+{% include "FOSUserBundle:Registration:register_content.html.twig" %}
+{% endblock fos_user_content %}

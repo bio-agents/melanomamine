@@ -1,0 +1,52 @@
+{% extends '::frontend.html.twig' %}
+{% block title %}Listing Evidences {% endblock %}
+{% block article %}
+    {% include 'MelanomamineFrontendBundle:Search:tags_code.html.twig' %}
+    {% set agenttipCounter=1 %}
+    {% set stringStickyAgenttip = "" %}
+
+    <div id="evidences">
+        Species disambiguation table:
+        <table id="tableDisambiguation">
+            <thead>
+                <th>Gene/Protein Name</th>
+                <th>NCBI GeneId</th>
+                <th>NCBI TaxId</th>
+                <th>Aliases</th>
+                <th>Select</th>
+            </thead>
+            <tbody>
+                {% set contador = 1 %}
+                {% for array in arrayNameIdAliases %}
+                    <tr class="document {{ cycle(['odd', 'even'], contador) }}">
+                        {% set geneProteinName = array["geneProteinName"] %}
+                        {% set ncbiGeneId = array["ncbiGeneId"] %}
+                        {% set outlinkGenId = "http://www.ncbi.nlm.nih.gov/gene/" ~ ncbiGeneId %}
+                        {% set ncbiTaxId = array["ncbiTaxId"] %}
+                        {% set outlinkTaxId = "http://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=" ~ ncbiTaxId %}
+                        {% set arrayAliases = array["arrayAliases"] %}
+
+                        <td class="center">{{ geneProteinName }}</td>
+                        <td class="center"><a href="{{ outlinkGenId }}" target="_blank">{{ ncbiGeneId }}</a></td>
+                        <td class="center"><a href="{{ outlinkTaxId }}" target="_blank">{{ ncbiTaxId }}</a></td>
+                        {% set stringAliases = arrayAliases | join(",&nbsp;&nbsp;&nbsp;") %}
+                        <td >{{ stringAliases | raw }}</td>
+                        <td class="disambiguation"><a class="button" href="{{ path('search_genes_expanded', {'whatToSearch': "ncbiGeneId", 'entityName': ncbiGeneId, 'specie': ncbiTaxId, 'searchTerm': entityName }) }}" >Search this {{ entityName }}</a></td>
+
+
+                    </tr>
+                {% endfor %}
+
+
+            </tbody>
+        </table>
+
+        {# Here we rebuild the stringStickyAgenttip inside its container divs #}
+        <div id="mystickyagenttip" class="stickyagenttip">
+            <div style="padding:5px">
+                {{ stringStickyAgenttip | raw }}
+            </div>
+            <div class="stickystatus"></div>
+        </div>
+    {% include 'MelanomamineFrontendBundle:Search:scripts_code.html.twig' %}
+{% endblock %}

@@ -1,0 +1,115 @@
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /profile
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+
+fos_user_change_password:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /profile
+
+homepage:
+    path: /
+    defaults: { _controller: MelanomamineFrontendBundle:Default:home}
+
+search:
+    path: /search/
+    defaults: { _controller: MelanomamineFrontendBundle:Search:search}
+
+search_normalized:
+    path: /search_normalized_mutations/
+    defaults: { _controller: MelanomamineFrontendBundle:Search:search}
+
+search_normalized_protein_mutations:
+    path: /search_normalized_mutations/{normalizedWildType}/{normalizedPosition}/{normalizedMutant}/
+    defaults: { _controller: MelanomamineFrontendBundle:Search:searchNormalizedProteinMutations}
+
+search_normalized_mutated:
+    path: /search_normalized_mutated_proteins/
+    defaults: { _controller: MelanomamineFrontendBundle:Search:search}
+
+search_normalized_mutated_proteins:
+    path: /search_normalized_mutated_proteins/{normalizedWildType}/{normalizedPosition}/{normalizedMutant}/
+    defaults: { _controller: MelanomamineFrontendBundle:Search:searchNormalizedMutatedProteins}
+
+search_keyword_without_orderby:
+    path: /search/keywords/{whatToSearch}/{entityName}/
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: search_keywords
+        permanent: true
+search_keywords:
+    path: /search/keywords/{whatToSearch}/{entityName}/{orderBy}/
+    defaults: { _controller: MelanomamineFrontendBundle:Search:searchKeywords, orderBy: "melanome"}
+
+search_genes:
+    path: /search/genes/{whatToSearch}/{entityName}/{specie}/
+    defaults: { _controller: MelanomamineFrontendBundle:Search:searchGenes, specie: "human"}
+
+search_genes_expanded:
+    path: /search/genes_expanded/{whatToSearch}/{entityName}/{specie}/{searchTerm}/
+    defaults: { _controller: MelanomamineFrontendBundle:Search:searchGenesExpanded}
+
+search_mutations:
+    path: /search/mutations/{whatToSearch}/{entityName}/{dna}/{protein}/
+    defaults: { _controller: MelanomamineFrontendBundle:Search:searchMutations, dna: "false", protein: "false"}
+
+search_normalized_mutations:
+    path: /search/normalized_mutations/{entityName}/{normalizedWildType}/{normalizedPosition}/{normalizedMutant}/
+    defaults: { _controller: MelanomamineFrontendBundle:Search:searchMutations, dna: "false", protein: "false"}
+
+search_chemicals:
+    path: /search/chemicals/{whatToSearch}/{entityName}/{queryExpansion}/
+    defaults: { _controller: MelanomamineFrontendBundle:Search:searchChemicals, queryExpansion: "false"}
+
+search_diseases:
+    path: /search/diseases/{whatToSearch}/{entityName}/
+    defaults: { _controller: MelanomamineFrontendBundle:Search:searchDiseases}
+
+search_mutatedProteins:
+    path: /search/mutatedProteins/{whatToSearch}/{entityName}/{specie}/
+    defaults: { _controller: MelanomamineFrontendBundle:Search:searchMutatedProteins}
+
+search_otherCancer_without_orderby:
+    path: /search/otherCancer/{whatToSearch}/{entityName}/
+    defaults:
+        _controller: FrameworkBundle:Redirect:redirect
+        route: search_otherCancer
+        permanent: true
+search_otherCancer:
+    path: /search/otherCancer/{whatToSearch}/{entityName}/{orderBy}/
+    defaults: { _controller: MelanomamineFrontendBundle:Search:searchOtherCancer, orderBy: "nsclc"}
+
+search_knowledge:
+    path: /search/knowledge/{concept1}/{entityType1}/{concept2}/{entityType2}/
+    defaults: { _controller: MelanomamineFrontendBundle:Search:searchKnowledge}
+
+download_summary_table:
+    path: /download/{filenameSummaryTable}/
+    defaults: { _controller: MelanomamineFrontendBundle:Download:downloadSummaryTable}
+
+search_chemspider:
+    pattern: /search_chemspider/compoundName/
+    defaults: { _controller: MelanomamineFrontendBundle:Search:searchChemspider}
+
+gene_set_enrichment:
+    pattern: /gene_set_enrichment/{whatToSearch}/{entityName}/
+    defaults: { _controller: MelanomamineFrontendBundle:GeneSetEnrichment:geneSetEnrichment}
+
+#elasticSearch_search_entityType:
+#    path: /search/{entityType}/{entityName}/
+#    defaults: { _controller: MelanomamineFrontendBundle:Search:searchEntityType}

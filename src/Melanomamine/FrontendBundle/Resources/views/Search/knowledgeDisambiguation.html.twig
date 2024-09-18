@@ -1,0 +1,133 @@
+{% extends '::frontend.html.twig' %}
+{% block title %}Listing Evidences {% endblock %}
+{% block article %}
+    {% include 'MelanomamineFrontendBundle:Search:tags_code.html.twig' %}
+    {% set agenttipCounter=1 %}
+    {% set stringStickyAgenttip = "" %}
+    <div id="evidences">
+        <form>
+        <input type="hidden" name="entityType1" class="entityType1" value="{{ entityType1 }}">
+        <input type="hidden" name="entityType2" class="entityType2" value="{{ entityType2 }}">
+
+        {% if isAmbiguousTerm1 is iterable and entityType1 != "freeText" %} {# If it's iterable  it means  that it is an array with different possibilities to disambiguate. Except for freeText, that don't need disambiguation #}
+            <h2>First search term "{{ concept1 }}" needs disambiguation.</h2>
+            {% set arrayResults = isAmbiguousTerm1.getResults %}
+            <fieldset>
+                <legend>Please select between this options:</legend>
+                <table class="tableDisambiguation">
+                    <thead>
+                        {% if entityType1=="disease" %}
+                            <th>Make your selection</th>
+                            <th>Disease mention</th>
+                            <th>MeshId/OMIM</th>
+                            <th>Ontology</th>
+                        {% elseif entityType1 == "gene" %}
+                            <th>Make your selection</th>
+                            <th>Gene mention</th>
+                            <th>NCBI gene id</th>
+                            <th>Taxon id</th>
+                        {% endif %}
+                    </thead>
+                    <tbody>
+                        {% set contador = 1 %}
+                        {% for result in arrayResults %}
+                            {% if entityType1 == "disease" %}
+                                {% set ontologyId = result.getSource["ontologyId"] %}
+                                <tr class="document {{ cycle(['odd', 'even'], contador) }}">
+                                    <td class="center"> <input type="radio" name="disambiguated1" value="{{ ontologyId }}" {% if contador==1 %}CHECKED{%endif%}></td>
+                                    <td class="center">{{ result.getSource["disease"] }}</td>
+                                    {% set ontology = result.getSource["ontology"] %}
+                                    {% if ontology=="MESH" %}
+                                        <td class="center"><a href="http://www.nlm.nih.gov/cgi/mesh/2016/MB_cgi?field=uid&term={{ ontologyId }}" class="popup">{{ ontologyId }}</a></td>
+                                    {% elseif ontology=="OMIM" %}
+                                        <td class="center"><a href="http://www.omim.org/entry/{{ ontologyId }}" class="popup">{{ ontologyId }}</a></td>
+                                    {% endif %}
+
+                                    <td class="center">{{ ontology }}</td>
+                                </tr>
+                                {% set contador = contador +1 %}
+                            {% elseif entityType1 == "gene" %}
+                                {% set ncbiGeneId = result.getSource["ncbiGeneId"] %}
+                                <tr class="document {{ cycle(['odd', 'even'], contador) }}">
+                                    <td class="center"> <input type="radio" name="disambiguated1" value="{{ ncbiGeneId }}" {% if contador==1 %}CHECKED{%endif%}></td>
+                                    <td class="center">{{ result.getSource["geneProteinName"] }}</td>
+                                    {% set ncbiTaxId = result.getSource["ncbiTaxId"] %}
+                                    <td class="center"><a href="http://www.ncbi.nlm.nih.gov/gene/{{ ncbiGeneId }}?term={{ ncbiTaxId }}[Taxonomy%20ID]" class="popup">{{ ncbiGeneId }}</a></td>
+
+                                    <td class="center">{{ ncbiTaxId }}</td>
+                                </tr>
+                                {% set contador = contador +1 %}
+                            {% endif %}
+                        {% endfor %}
+
+
+                    </tbody>
+                </table>
+            </fieldset>
+        {% elseif isAmbiguousTerm1 == "0" %}
+            <h3>Warning. Your first search term "{{ concept1 }}" did not return any results searching as a {{ entityType1 }}</h3>
+        {% else %}
+            {# We should have the ontologyId in isAmbiguousTerm1 #}
+            <input type="hidden" name="concept1" class="concept1" value="{{ isAmbiguousTerm1 }}">
+        {% endif %}
+
+        {% if isAmbiguousTerm2 is iterable and entityType1 != "freeText"%} {# If it's iterable  it means  that it is an array with different possibilities to disambiguate. Except for freeText, that don't need disambiguation#}
+            <h2>Second search term "{{ concept2 }}" needs disambiguation.</h2>
+            {% set arrayResults = isAmbiguousTerm2.getResults %}
+            <fieldset>
+                <legend>Please select between this options:</legend>
+                <table class="tableDisambiguation">
+                    <thead>
+                        {% if entityType1=="disease" %}
+                            <th>Make your selection</th>
+                            <th>Disease mention</th>
+                            <th>MeshId/OMIM</th>
+                            <th>Ontology</th>
+                        {% elseif entityType1 == "gene" %}
+                            <th>Make your selection</th>
+                            <th>Gene mention</th>
+                            <th>NCBI gene id</th>
+                            <th>Taxon id</th>
+                        {% endif %}
+                    </thead>
+                    <tbody>
+                        {% set contador = 1 %}
+                        {% for result in arrayResults %}
+                            {% set ontologyId = result.getSource["ontologyId"] %}
+                            <tr class="document {{ cycle(['odd', 'even'], contador) }}">
+                                <td class="center"> <input type="radio" name="disambiguated2" value="{{ ontologyId }}" {% if contador==1 %}CHECKED{%endif%}></td>
+                                <td class="center">{{ result.getSource["disease"] }}</td>
+                                {% set ontology = result.getSource["ontology"] %}
+                                {% if ontology=="MESH" %}
+                                    <td class="center"><a href="http://www.nlm.nih.gov/cgi/mesh/2016/MB_cgi?field=uid&term={{ ontologyId }}" class="popup">{{ ontologyId }}</a></td>
+                                {% elseif ontology=="OMIM" %}
+                                    <td class="center"><a href="http://www.omim.org/entry/{{ ontologyId }}" class="popup">{{ ontologyId }}</a></td>
+                                {% endif %}
+
+                                <td class="center">{{ ontology }}</td>
+                            </tr>
+                            {% set contador = contador +1 %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </fieldset>
+        {% elseif isAmbiguousTerm2 == "0" %}
+            <h3>Warning. Your second search term "{{ concept2 }}" did not return any results searching as a {{ entityType2 }}</h3>
+        {% else %}
+            {# We should have the ontologyId in isAmbiguousTerm2 #}
+            <input type="hidden" name="concept2" class="concept2" value="{{ isAmbiguousTerm2 }}">
+        {% endif %}
+
+        <div id="disambiguateButton">
+            <a class="button orange disambiguate" >Disambiguate</a>
+        </div>
+        </form>
+        {# Here we rebuild the stringStickyAgenttip inside its container divs #}
+        <div id="mystickyagenttip" class="stickyagenttip">
+            <div style="padding:5px">
+                {{ stringStickyAgenttip | raw }}
+            </div>
+            <div class="stickystatus"></div>
+        </div>
+    {% include 'MelanomamineFrontendBundle:Search:scripts_code.html.twig' %}
+{% endblock %}

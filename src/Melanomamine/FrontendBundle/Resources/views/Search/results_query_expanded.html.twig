@@ -1,0 +1,131 @@
+{% extends '::frontend.html.twig' %}
+{% block title %}Listing Evidences {% endblock %}
+{% block article %}
+    {% include 'MelanomamineFrontendBundle:Search:tags_code.html.twig' %}
+    {% set agenttipCounter=0 %}
+    {% set stringStickyAgenttip = "" %}
+
+    <div id="evidences">
+        {% if totalHits != 0 %}
+            <div id="abstractsResults">
+                <a name="abstracts"></a>
+                <h3>Ranked Abstracts for "<span class="underline">{{ searchTerm }}</span>" {#  {{ entityType | capitalize }} search</h3> #}
+                <div class="btmspc-dbl">
+                    <small>
+                        <em>
+                            Entity mentions are highlighted as follows:
+                            <mark class="termSearched">What you searched</mark>, <span class="genes_highlight">Genes</span>, <span class="mutations_highlight">Mutations</span>, <span class="chemicals_highlight">Chemicals</span>, <span class="diseases_highlight">Diseases</span>, <span class="mutatedProteins_highlight">Mutated Proteins</span>, , <span class="species_highlight">Species</span>
+                        </em>
+                        .
+                    </small>
+                </div>
+                 <div class="results-summary">
+                <table>
+                    {% if totalHits > 1500 %}
+                            <tr>
+                                {% set totalHits = resultSetAbstracts.getTotalHits %}
+                                <td colspan="5"><strong>Number of Abstracts:</strong> {{ totalHits }}. Only the first 500 are shown. <br/><span class="grey">(Click here to display all results)</span></td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td><strong>Number of Abstracts:</strong> {{ hitsShowed }}</td>
+                            </tr>
+                        {% endif %}
+
+                        <tr>
+                            <td><strong>Query time:</strong> {{ totalTime }} ms.</td>
+                        </tr>
+
+                    {% if arrayAliases is defined %}
+                        <tr>
+                            <td colspan="5"><strong>Query Expansion Aliases:</strong> {{ arrayAliases | length }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5"><strong>Aliases:</strong> {{ arrayAliases | join(", ") }}</td>
+                        </tr>
+                    {% endif %}
+
+                </table>
+                Summary Table:  (<a href="{{ path('download_summary_table', {'filenameSummaryTable': filenameSummaryTable}) }}" >Download table</a>)<br>
+                {{ summaryTable | raw }}
+            </div>
+                <div class="clear-both"></div>
+                {% set currentPath = path(app.request.attributes.get('_route'),
+                           app.request.attributes.get('_route_params')) %}
+                <table id="tableResults" class="tablesorter">
+                    <thead>
+                        {% set environment = app.environment %}
+
+                            <th>Pubmed Link</th>
+                            <th>Title</th>
+                            <th>Abstract</th>
+                    </thead>
+                    <tbody>
+                        {% set contador = 1 %}
+                        {% for result in arrayResultsAbs %}
+                            <tr class="document {{ cycle(['odd', 'even'], contador) }}">
+                                {% set contador = contador + 1 %}
+                                {% set source = result.getSource %}
+                                {% set pmid = source["pmid"]  %}
+                                {% set title = source["title"]  %}
+                                {% set text = source["text"]  %}
+                                {% set score = source["melanoma_score_2"] %}
+                                {% set offset = title | length + 1%}
+                                {% set imageRoute = 'images/pubmed.png' %}
+                                {% set link="http://www.ncbi.nlm.nih.gov/pubmed/" ~ pmid %}
+
+                                <td>
+                                    <a href="{{ link }}" target="_blank"><img src="{{ asset(imageRoute) }}" class="outlinkLogo"/></a>
+                                    <div class="center">{{ score | number_format(2) | colorCodingScoreFilter | raw }}</div>
+                                </td>
+                                    {% set arrayHighlightedTitle = title | retrieveHighlighted (source, entityName, 0, "title", agenttipCounter) %}
+                                    {% set title = arrayHighlightedTitle[0] %}
+                                    {% set agenttip = arrayHighlightedTitle[1] %}
+                                    {% set stringStickyAgenttip = stringStickyAgenttip ~agenttip %}
+                                    {% set agenttipCounter = arrayHighlightedTitle[2] %}
+                                    {% set stringSummaryTitle = arraySummaryTitles[pmid] | generateSummaryTitleString %}
+
+                                <td>{{ title | raw }} {{ stringSummaryTitle | raw }} </td>
+                                    {% set arrayHighlightedText = text | retrieveHighlighted (source, entityName, offset, "text", agenttipCounter) %}
+                                    {% set text = arrayHighlightedText[0] %}
+                                    {% set agenttip = arrayHighlightedText[1] %}
+                                    {% set stringStickyAgenttip = stringStickyAgenttip ~agenttip %}
+                                    {% set agenttipCounter =  arrayHighlightedText[2] %}
+                                <td>{{ text | raw }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!-- here pagination block for abstracts -->
+                <div class="pagination">
+                {% if entityType == "genes" or entityType == "mutatedProteins" %}
+                    {{ simple_paginator_render(
+                        'search_' ~ entityType ~ '_expanded', 'abstracts',
+                            {
+                                'routeParams' : {'whatToSearch': "ncbiGeneId", 'entityName': entityName, 'specie': specie, 'searchTerm': searchTerm},
+                                'container_class' : 'pagination'
+                            }
+                        )
+                    }}
+                {% endif %}
+                {% if entityType == "chemicals" %}
+                    {{ simple_paginator_render(
+                        'search_' ~ entityType, 'abstracts',
+                            {
+                                'routeParams' : {'entityType' : entityType, 'whatToSearch' : whatToSearch, 'entityName' : entityName},
+                                'container_class' : 'pagination'
+                            }
+                        )
+                    }}
+                {% endif %}
+            </div>
+        {% endif %}
+        {# Here we rebuild the stringStickyAgenttip inside its container divs #}
+        <div id="mystickyagenttip" class="stickyagenttip">
+            <div style="padding:5px">
+                {{ stringStickyAgenttip | raw }}
+            </div>
+            <div class="stickystatus"></div>
+        </div>
+    {% include 'MelanomamineFrontendBundle:Search:scripts_code.html.twig' %}
+{% endblock %}
