@@ -1,12 +1,3 @@
-{
-    "parserOptions": {
-        "ecmaVersion": 6,
-        "sourceType": "module",
-        "ecmaFeatures": {
-            "jsx": true
-        }
-    },
-    "rules": {
-        "semi": 2, "no-undef": 2
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:a7d091fd343abad61086cd10aacdf40cf04a5e1c4eca389b762b3b309a323fd2
+size 206
